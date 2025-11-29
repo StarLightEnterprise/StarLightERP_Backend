@@ -1,4 +1,6 @@
 file(REMOVE_RECURSE
+  "CMakeFiles/StarLightERP_Backend_Temp.dir/controllers/AuthController.cc.o"
+  "CMakeFiles/StarLightERP_Backend_Temp.dir/controllers/AuthController.cc.o.d"
   "CMakeFiles/StarLightERP_Backend_Temp.dir/controllers/TestController.cc.o"
   "CMakeFiles/StarLightERP_Backend_Temp.dir/controllers/TestController.cc.o.d"
   "CMakeFiles/StarLightERP_Backend_Temp.dir/main.cc.o"

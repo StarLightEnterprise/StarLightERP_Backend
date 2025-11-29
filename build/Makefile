@@ -142,6 +142,30 @@ StarLightERP_Backend_Temp_test/fast:
 	$(MAKE) $(MAKESILENT) -f test/CMakeFiles/StarLightERP_Backend_Temp_test.dir/build.make test/CMakeFiles/StarLightERP_Backend_Temp_test.dir/build
 .PHONY : StarLightERP_Backend_Temp_test/fast
 
+controllers/AuthController.o: controllers/AuthController.cc.o
+.PHONY : controllers/AuthController.o
+
+# target to build an object file
+controllers/AuthController.cc.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/StarLightERP_Backend_Temp.dir/build.make CMakeFiles/StarLightERP_Backend_Temp.dir/controllers/AuthController.cc.o
+.PHONY : controllers/AuthController.cc.o
+
+controllers/AuthController.i: controllers/AuthController.cc.i
+.PHONY : controllers/AuthController.i
+
+# target to preprocess a source file
+controllers/AuthController.cc.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/StarLightERP_Backend_Temp.dir/build.make CMakeFiles/StarLightERP_Backend_Temp.dir/controllers/AuthController.cc.i
+.PHONY : controllers/AuthController.cc.i
+
+controllers/AuthController.s: controllers/AuthController.cc.s
+.PHONY : controllers/AuthController.s
+
+# target to generate assembly for a file
+controllers/AuthController.cc.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/StarLightERP_Backend_Temp.dir/build.make CMakeFiles/StarLightERP_Backend_Temp.dir/controllers/AuthController.cc.s
+.PHONY : controllers/AuthController.cc.s
+
 controllers/TestController.o: controllers/TestController.cc.o
 .PHONY : controllers/TestController.o
 
@@ -200,6 +224,9 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... StarLightERP_Backend_Temp"
 	@echo "... StarLightERP_Backend_Temp_test"
+	@echo "... controllers/AuthController.o"
+	@echo "... controllers/AuthController.i"
+	@echo "... controllers/AuthController.s"
 	@echo "... controllers/TestController.o"
 	@echo "... controllers/TestController.i"
 	@echo "... controllers/TestController.s"
