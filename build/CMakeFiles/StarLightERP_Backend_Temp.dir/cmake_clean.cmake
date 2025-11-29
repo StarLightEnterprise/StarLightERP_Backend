@@ -1,0 +1,13 @@
+file(REMOVE_RECURSE
+  "CMakeFiles/StarLightERP_Backend_Temp.dir/controllers/TestController.cc.o"
+  "CMakeFiles/StarLightERP_Backend_Temp.dir/controllers/TestController.cc.o.d"
+  "CMakeFiles/StarLightERP_Backend_Temp.dir/main.cc.o"
+  "CMakeFiles/StarLightERP_Backend_Temp.dir/main.cc.o.d"
+  "StarLightERP_Backend_Temp"
+  "StarLightERP_Backend_Temp.pdb"
+)
+
+# Per-language clean rules from dependency scanning.
+foreach(lang CXX)
+  include(CMakeFiles/StarLightERP_Backend_Temp.dir/cmake_clean_${lang}.cmake OPTIONAL)
+endforeach()
