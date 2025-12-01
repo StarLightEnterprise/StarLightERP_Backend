@@ -161,34 +161,91 @@ void AuthController::login(const HttpRequestPtr &req, std::function<void(const H
             return;
         }
         
-        // Login successful - generate JWT tokens
+        // Login successful - query user's customers
         int userId = row["id"].as<int>();
         std::string userRole = row["role"].isNull() ? "User" : row["role"].as<std::string>();
         std::string userName = row["name"].isNull() ? row["username"].as<std::string>() : row["name"].as<std::string>();
         
-        auto tokens = JWTAuth::generateTokenPair(userId, username, userRole);
+        // Query customer_user table to get user's customers
+        auto customerFuture = dbClient->execSqlAsyncFuture(
+            "SELECT cu.customer_id, c.customer_name, c.customer_category, c.customer_type, cu.is_primary "
+            "FROM customer_user cu "
+            "JOIN customers c ON cu.customer_id = c.customer_id "
+            "WHERE cu.user_id = $1 AND c.is_active = true "
+            "ORDER BY cu.is_primary DESC, c.customer_name",
+            userId
+        );
         
-        ret["success"] = true;
-        ret["message"] = "Login successful";
-        ret["accessToken"] = tokens.accessToken;
-        ret["user"]["id"] = userId;
-        ret["user"]["username"] = username;
-        ret["user"]["email"] = row["email"].as<std::string>();
-        ret["user"]["role"] = userRole;
-        ret["user"]["name"] = userName;
+        auto customerResult = customerFuture.get();
         
-        auto resp = HttpResponse::newHttpJsonResponse(ret);
+        if (customerResult.size() == 0) {
+            ret["success"] = false;
+            ret["message"] = "No active customers assigned to this user. Please contact administrator.";
+            auto resp = HttpResponse::newHttpJsonResponse(ret);
+            resp->setStatusCode(k403Forbidden);
+            addCorsHeaders(resp);
+            callback(resp);
+            return;
+        }
         
-        // Set refresh token in httpOnly cookie (secure in production)
-        Cookie refreshCookie("refreshToken", tokens.refreshToken);
-        refreshCookie.setMaxAge(30 * 24 * 3600); // 30 days
-        refreshCookie.setPath("/");
-        refreshCookie.setHttpOnly(true);
-        refreshCookie.setSecure(true); // Use true for HTTPS in production
-        resp->addCookie(refreshCookie);
+        if (customerResult.size() == 1) {
+            // Single customer - auto-select and generate JWT
+            int customerId = customerResult[0]["customer_id"].as<int>();
+            std::string customerName = customerResult[0]["customer_name"].as<std::string>();
+            
+            auto tokens = JWTAuth::generateTokenPair(userId, username, userRole, customerId);
         
-        addCorsHeaders(resp);
-        callback(resp);
+            ret["success"] = true;
+            ret["message"] = "Login successful";
+            ret["accessToken"] = tokens.accessToken;
+            ret["user"]["id"] = userId;
+            ret["user"]["username"] = username;
+            ret["user"]["email"] = row["email"].as<std::string>();
+            ret["user"]["role"] = userRole;
+            ret["user"]["name"] = userName;
+            ret["user"]["customerId"] = customerId;
+            ret["user"]["customerName"] = customerName;
+        
+            auto resp = HttpResponse::newHttpJsonResponse(ret);
+        
+            // Set refresh token in httpOnly cookie (secure in production)
+            Cookie refreshCookie("refreshToken", tokens.refreshToken);
+            refreshCookie.setMaxAge(30 * 24 * 3600); // 30 days
+            refreshCookie.setPath("/");
+            refreshCookie.setHttpOnly(true);
+            refreshCookie.setSecure(true); // Use true for HTTPS in production
+            resp->addCookie(refreshCookie);
+        
+            addCorsHeaders(resp);
+            callback(resp);
+            
+        } else {
+            // Multiple customers - return list for selection
+            ret["success"] = true;
+            ret["message"] = "Please select a customer";
+            ret["requiresCustomerSelection"] = true;
+            ret["user"]["id"] = userId;
+            ret["user"]["username"] = username;
+            ret["user"]["email"] = row["email"].as<std::string>();
+            ret["user"]["role"] = userRole;
+            ret["user"]["name"] = userName;
+            
+            Json::Value customers(Json::arrayValue);
+            for (size_t i = 0; i < customerResult.size(); i++) {
+                Json::Value customer;
+                customer["customerId"] = customerResult[i]["customer_id"].as<int>();
+                customer["customerName"] = customerResult[i]["customer_name"].as<std::string>();
+                customer["customerCategory"] = customerResult[i]["customer_category"].as<std::string>();
+                customer["customerType"] = customerResult[i]["customer_type"].as<std::string>();
+                customer["isPrimary"] = customerResult[i]["is_primary"].as<bool>();
+                customers.append(customer);
+            }
+            ret["customers"] = customers;
+            
+            auto resp = HttpResponse::newHttpJsonResponse(ret);
+            addCorsHeaders(resp);
+            callback(resp);
+        }
         
     } catch (const DrogonDbException &e) {
         LOG_ERROR << "Database error: " << e.base().what();
@@ -285,8 +342,8 @@ void AuthController::registerUser(const HttpRequestPtr &req, std::function<void(
             std::string registeredUsername = row["username"].as<std::string>();
             std::string registeredEmail = row["email"].as<std::string>();
             
-            // Generate JWT tokens for automatic login
-            auto tokens = JWTAuth::generateTokenPair(userId, registeredUsername, "User");
+            // Generate JWT tokens for automatic login with customer_id = 0 (no customer assigned yet)
+            auto tokens = JWTAuth::generateTokenPair(userId, registeredUsername, "User", 0);
             
             ret["success"] = true;
             ret["message"] = "Registration successful";
@@ -310,6 +367,7 @@ void AuthController::registerUser(const HttpRequestPtr &req, std::function<void(
             
             addCorsHeaders(resp);
             callback(resp);
+            
         } else {
             ret["success"] = false;
             ret["message"] = "Registration failed";
@@ -389,11 +447,11 @@ void AuthController::refreshToken(const HttpRequestPtr &req, std::function<void(
         return;
     }
     
-    // Generate new access token (and optionally rotate refresh token)
-    auto newAccessToken = JWTAuth::generateAccessToken(decoded.userId, decoded.username, decoded.role);
+    // Generate new tokens with same customer_id
+    auto newAccessToken = JWTAuth::generateAccessToken(decoded.userId, decoded.username, decoded.role, decoded.customerId);
     
     // Optional: Generate new refresh token for rotation (more secure)
-    auto tokens = JWTAuth::generateTokenPair(decoded.userId, decoded.username, decoded.role);
+    auto tokens = JWTAuth::generateTokenPair(decoded.userId, decoded.username, decoded.role, decoded.customerId);
     
     // Blacklist old refresh token (token rotation)
     JWTAuth::TokenBlacklist::getInstance().addToken(refreshToken);
@@ -455,4 +513,130 @@ void AuthController::revokeToken(const HttpRequestPtr &req, std::function<void(c
     
     addCorsHeaders(resp);
     callback(resp);
+}
+
+// Add to end of AuthController.cc file
+
+void AuthController::selectCustomer(const HttpRequestPtr &req, std::function<void(const HttpResponsePtr &)> &&callback) {
+    // Handle CORS preflight
+    if (req->method() == Options) {
+        auto resp = HttpResponse::newHttpResponse();
+        addCorsHeaders(resp);
+        callback(resp);
+        return;
+    }
+
+    auto jsonPtr = req->getJsonObject();
+    Json::Value ret;
+    
+    if (!jsonPtr) {
+        ret["success"] = false;
+        ret["message"] = "Invalid JSON";
+        auto resp = HttpResponse::newHttpJsonResponse(ret);
+        resp->setStatusCode(k400BadRequest);
+        addCorsHeaders(resp);
+        callback(resp);
+        return;
+    }
+    
+    std::string username = (*jsonPtr).get("username", "").asString();
+    int customerId = (*jsonPtr).get("customerId", 0).asInt();
+    
+    if (username.empty() || customerId == 0) {
+        ret["success"] = false;
+        ret["message"] = "Username and customer ID are required";
+        auto resp = HttpResponse::newHttpJsonResponse(ret);
+        resp->setStatusCode(k400BadRequest);
+        addCorsHeaders(resp);
+        callback(resp);
+        return;
+    }
+    
+    // Get database client
+    auto dbClient = app().getDbClient();
+    
+    // Verify user exists and get their info
+    auto userFuture = dbClient->execSqlAsyncFuture(
+        "SELECT id, username, email, name, role FROM users WHERE username = $1",
+        username
+    );
+    
+    try {
+        auto userResult = userFuture.get();
+        
+        if (userResult.size() == 0) {
+            ret["success"] = false;
+            ret["message"] = "User not found";
+            auto resp = HttpResponse::newHttpJsonResponse(ret);
+            resp->setStatusCode(k404NotFound);
+            addCorsHeaders(resp);
+            callback(resp);
+            return;
+        }
+        
+        auto userRow = userResult[0];
+        int userId = userRow["id"].as<int>();
+        std::string userRole = userRow["role"].isNull() ? "User" : userRow["role"].as<std::string>();
+        std::string userName = userRow["name"].isNull() ? userRow["username"].as<std::string>() : userRow["name"].as<std::string>();
+        
+        // Verify user has access to this customer
+        auto customerAccessFuture = dbClient->execSqlAsyncFuture(
+            "SELECT cu.customer_id, c.customer_name, c.customer_category, c.customer_type "
+            "FROM customer_user cu "
+            "JOIN customers c ON cu.customer_id = c.customer_id "
+            "WHERE cu.user_id = $1 AND cu.customer_id = $2 AND c.is_active = true",
+            userId,
+            customerId
+        );
+        
+        auto customerAccessResult = customerAccessFuture.get();
+        
+        if (customerAccessResult.size() == 0) {
+            ret["success"] = false;
+            ret["message"] = "You do not have access to this customer";
+            auto resp = HttpResponse::newHttpJsonResponse(ret);
+            resp->setStatusCode(k403Forbidden);
+            addCorsHeaders(resp);
+            callback(resp);
+            return;
+        }
+        
+        // User has access - generate JWT with selected customer_id
+        std::string customerName = customerAccessResult[0]["customer_name"].as<std::string>();
+        
+        auto tokens = JWTAuth::generateTokenPair(userId, username, userRole, customerId);
+        
+        ret["success"] = true;
+        ret["message"] = "Customer selected successfully";
+        ret["accessToken"] = tokens.accessToken;
+        ret["user"]["id"] = userId;
+        ret["user"]["username"] = username;
+        ret["user"]["email"] = userRow["email"].as<std::string>();
+        ret["user"]["role"] = userRole;
+        ret["user"]["name"] = userName;
+        ret["user"]["customerId"] = customerId;
+        ret["user"]["customerName"] = customerName;
+        
+        auto resp = HttpResponse::newHttpJsonResponse(ret);
+        
+        // Set refresh token in httpOnly cookie
+        Cookie refreshCookie("refreshToken", tokens.refreshToken);
+        refreshCookie.setMaxAge(30 * 24 * 3600); // 30 days
+        refreshCookie.setPath("/");
+        refreshCookie.setHttpOnly(true);
+        refreshCookie.setSecure(true);
+        resp->addCookie(refreshCookie);
+        
+        addCorsHeaders(resp);
+        callback(resp);
+        
+    } catch (const DrogonDbException &e) {
+        LOG_ERROR << "Database error: " << e.base().what();
+        ret["success"] = false;
+        ret["message"] = "Database error occurred";
+        auto resp = HttpResponse::newHttpJsonResponse(ret);
+        resp->setStatusCode(k500InternalServerError);
+        addCorsHeaders(resp);
+        callback(resp);
+    }
 }

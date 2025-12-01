@@ -16,6 +16,7 @@ namespace JWTAuth {
         int userId;
         std::string username;
         std::string role;
+        int customerId;
         std::chrono::system_clock::time_point expiration;
         bool isValid;
     };
@@ -25,10 +26,10 @@ namespace JWTAuth {
     const int REFRESH_TOKEN_EXPIRY_DAYS = 30;     // Long-lived refresh tokens
     
     // Generate access and refresh token pair
-    TokenPair generateTokenPair(int userId, const std::string& username, const std::string& role);
+    TokenPair generateTokenPair(int userId, const std::string& username, const std::string& role, int customerId);
     
     // Generate only access token (for refresh flow)
-    std::string generateAccessToken(int userId, const std::string& username, const std::string& role);
+    std::string generateAccessToken(int userId, const std::string& username, const std::string& role, int customerId);
     
     // Validate and decode token
     DecodedToken validateAndDecode(const std::string& token);

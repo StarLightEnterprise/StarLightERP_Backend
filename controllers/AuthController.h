@@ -16,12 +16,15 @@ class AuthController : public drogon::HttpController<AuthController>
     ADD_METHOD_TO(AuthController::refreshToken, "/api/auth/refresh", Post, Options);
     // POST /api/auth/revoke
     ADD_METHOD_TO(AuthController::revokeToken, "/api/auth/revoke", Post, Options);
+    // POST /api/auth/select-customer
+    ADD_METHOD_TO(AuthController::selectCustomer, "/api/auth/select-customer", Post, Options);
     METHOD_LIST_END
 
     void login(const HttpRequestPtr &req, std::function<void(const HttpResponsePtr &)> &&callback);
     void registerUser(const HttpRequestPtr &req, std::function<void(const HttpResponsePtr &)> &&callback);
     void refreshToken(const HttpRequestPtr &req, std::function<void(const HttpResponsePtr &)> &&callback);
     void revokeToken(const HttpRequestPtr &req, std::function<void(const HttpResponsePtr &)> &&callback);
+    void selectCustomer(const HttpRequestPtr &req, std::function<void(const HttpResponsePtr &)> &&callback);
 
   private:
     // Helper function to validate password complexity

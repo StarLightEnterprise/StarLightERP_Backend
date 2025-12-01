@@ -70,5 +70,11 @@
         "client_max_body_size": "1M",
         "client_max_memory_body_size": "64K",
         "client_max_websocket_message_size": "128K"
-    }
+    },
+    "filters": [
+        {
+            "name": "TenantMiddleware",
+            "path": "/api/test/*"
+        }
+    ]
 }

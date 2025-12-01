@@ -190,6 +190,30 @@ controllers/JWTUtils.cc.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/StarLightERP_Backend_Temp.dir/build.make CMakeFiles/StarLightERP_Backend_Temp.dir/controllers/JWTUtils.cc.s
 .PHONY : controllers/JWTUtils.cc.s
 
+controllers/TenantTestController.o: controllers/TenantTestController.cc.o
+.PHONY : controllers/TenantTestController.o
+
+# target to build an object file
+controllers/TenantTestController.cc.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/StarLightERP_Backend_Temp.dir/build.make CMakeFiles/StarLightERP_Backend_Temp.dir/controllers/TenantTestController.cc.o
+.PHONY : controllers/TenantTestController.cc.o
+
+controllers/TenantTestController.i: controllers/TenantTestController.cc.i
+.PHONY : controllers/TenantTestController.i
+
+# target to preprocess a source file
+controllers/TenantTestController.cc.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/StarLightERP_Backend_Temp.dir/build.make CMakeFiles/StarLightERP_Backend_Temp.dir/controllers/TenantTestController.cc.i
+.PHONY : controllers/TenantTestController.cc.i
+
+controllers/TenantTestController.s: controllers/TenantTestController.cc.s
+.PHONY : controllers/TenantTestController.s
+
+# target to generate assembly for a file
+controllers/TenantTestController.cc.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/StarLightERP_Backend_Temp.dir/build.make CMakeFiles/StarLightERP_Backend_Temp.dir/controllers/TenantTestController.cc.s
+.PHONY : controllers/TenantTestController.cc.s
+
 controllers/TestController.o: controllers/TestController.cc.o
 .PHONY : controllers/TestController.o
 
@@ -238,6 +262,30 @@ controllers/UserController.cc.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/StarLightERP_Backend_Temp.dir/build.make CMakeFiles/StarLightERP_Backend_Temp.dir/controllers/UserController.cc.s
 .PHONY : controllers/UserController.cc.s
 
+filters/TenantMiddleware.o: filters/TenantMiddleware.cc.o
+.PHONY : filters/TenantMiddleware.o
+
+# target to build an object file
+filters/TenantMiddleware.cc.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/StarLightERP_Backend_Temp.dir/build.make CMakeFiles/StarLightERP_Backend_Temp.dir/filters/TenantMiddleware.cc.o
+.PHONY : filters/TenantMiddleware.cc.o
+
+filters/TenantMiddleware.i: filters/TenantMiddleware.cc.i
+.PHONY : filters/TenantMiddleware.i
+
+# target to preprocess a source file
+filters/TenantMiddleware.cc.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/StarLightERP_Backend_Temp.dir/build.make CMakeFiles/StarLightERP_Backend_Temp.dir/filters/TenantMiddleware.cc.i
+.PHONY : filters/TenantMiddleware.cc.i
+
+filters/TenantMiddleware.s: filters/TenantMiddleware.cc.s
+.PHONY : filters/TenantMiddleware.s
+
+# target to generate assembly for a file
+filters/TenantMiddleware.cc.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/StarLightERP_Backend_Temp.dir/build.make CMakeFiles/StarLightERP_Backend_Temp.dir/filters/TenantMiddleware.cc.s
+.PHONY : filters/TenantMiddleware.cc.s
+
 main.o: main.cc.o
 .PHONY : main.o
 
@@ -278,12 +326,18 @@ help:
 	@echo "... controllers/JWTUtils.o"
 	@echo "... controllers/JWTUtils.i"
 	@echo "... controllers/JWTUtils.s"
+	@echo "... controllers/TenantTestController.o"
+	@echo "... controllers/TenantTestController.i"
+	@echo "... controllers/TenantTestController.s"
 	@echo "... controllers/TestController.o"
 	@echo "... controllers/TestController.i"
 	@echo "... controllers/TestController.s"
 	@echo "... controllers/UserController.o"
 	@echo "... controllers/UserController.i"
 	@echo "... controllers/UserController.s"
+	@echo "... filters/TenantMiddleware.o"
+	@echo "... filters/TenantMiddleware.i"
+	@echo "... filters/TenantMiddleware.s"
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"
