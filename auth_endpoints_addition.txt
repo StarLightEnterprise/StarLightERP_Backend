@@ -1,0 +1,97 @@
+
+// Add to end of AuthController.cc file
+
+void AuthController::refreshToken(const HttpRequestPtr &req, std::function<void(const HttpResponsePtr &)> &&callback) {
+    // Handle CORS preflight
+    if (req->method() == Options) {
+        auto resp = HttpResponse::newHttpResponse();
+        addCorsHeaders(resp);
+        callback(resp);
+        return;
+    }
+
+    Json::Value ret;
+    
+    // Get refresh token from httpOnly cookie
+    std::string refreshToken = req->getCookie("refreshToken");
+    
+    if (refreshToken.empty()) {
+        ret["success"] = false;
+        ret["message"] = "No refresh token provided";
+        auto resp = HttpResponse::newHttpJsonResponse(ret);
+        resp->setStatusCode(k401Unauthorized);
+        addCorsHeaders(resp);
+        callback(resp);
+        return;
+    }
+    
+    // Validate refresh token
+    auto decoded = JWTAuth::validateAndDecode(refreshToken);
+    
+    if (!decoded.isValid) {
+        ret["success"] = false;
+        ret["message"] = "Invalid or expired refresh token";
+        auto resp = HttpResponse::newHttpJsonResponse(ret);
+        resp->setStatusCode(k401Unauthorized);
+        addCorsHeaders(resp);
+        callback(resp);
+        return;
+    }
+    
+    // Generate new access token (and optionally rotate refresh token)
+    auto newAccessToken = JWTAuth::generateAccessToken(decoded.userId, decoded.username, decoded.role);
+    
+    // Optional: Generate new refresh token for rotation (more secure)
+    auto tokens = JWTAuth::generateTokenPair(decoded.userId, decoded.username, decoded.role);
+    
+    // Blacklist old refresh token (token rotation)
+    JWTAuth::TokenBlacklist::getInstance().addToken(refreshToken);
+    
+    ret["success"] = true;
+    ret["accessToken"] = tokens.accessToken;
+    
+    auto resp = HttpResponse::newHttpJsonResponse(ret);
+    
+    // Set new refresh token in cookie (token rotation)
+    resp->addCookie("refreshToken", tokens.refreshToken, 30 * 24 * 3600, "/", "", true, true);
+    
+    addCorsHeaders(resp);
+    callback(resp);
+}
+
+void AuthController::revokeToken(const HttpRequestPtr &req, std::function<void(const HttpResponsePtr &)> &&callback) {
+    // Handle CORS preflight
+    if (req->method() == Options) {
+        auto resp = HttpResponse::newHttpResponse();
+        addCorsHeaders(resp);
+        callback(resp);
+        return;
+    }
+
+    Json::Value ret;
+    
+    // Get tokens from both Authorization header and cookie
+    std::string authHeader = req->getHeader("Authorization");
+    std::string accessToken = JWTAuth::extractTokenFromHeader(authHeader);
+    std::string refreshToken = req->getCookie("refreshToken");
+    
+    // Blacklist both tokens
+    if (!accessToken.empty()) {
+        JWTAuth::TokenBlacklist::getInstance().addToken(accessToken);
+    }
+    
+    if (!refreshToken.empty()) {
+        JWTAuth::TokenBlacklist::getInstance().addToken(refreshToken);
+    }
+    
+    ret["success"] = true;
+    ret["message"] = "Tokens revoked successfully";
+    
+    auto resp = HttpResponse::newHttpJsonResponse(ret);
+    
+    // Clear refresh token cookie
+    resp->addCookie("refreshToken", "", 0, "/", "", true, true);
+    
+    addCorsHeaders(resp);
+    callback(resp);
+}

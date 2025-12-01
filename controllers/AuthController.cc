@@ -1,4 +1,5 @@
 #include "AuthController.h"
+#include "JWTUtils.h"
 #include <drogon/orm/Mapper.h>
 #include <drogon/HttpAppFramework.h>
 #include <trantor/utils/Logger.h>
@@ -128,7 +129,7 @@ void AuthController::login(const HttpRequestPtr &req, std::function<void(const H
     
     // Query user from database
     auto f = dbClient->execSqlAsyncFuture(
-        "SELECT id, username, password_hash, email FROM users WHERE username = $1",
+        "SELECT id, username, password_hash, email, name, role FROM users WHERE username = $1",
         username
     );
     
@@ -160,14 +161,32 @@ void AuthController::login(const HttpRequestPtr &req, std::function<void(const H
             return;
         }
         
-        // Login successful
+        // Login successful - generate JWT tokens
+        int userId = row["id"].as<int>();
+        std::string userRole = row["role"].isNull() ? "User" : row["role"].as<std::string>();
+        std::string userName = row["name"].isNull() ? row["username"].as<std::string>() : row["name"].as<std::string>();
+        
+        auto tokens = JWTAuth::generateTokenPair(userId, username, userRole);
+        
         ret["success"] = true;
         ret["message"] = "Login successful";
-        ret["user"]["id"] = row["id"].as<int>();
-        ret["user"]["username"] = row["username"].as<std::string>();
+        ret["accessToken"] = tokens.accessToken;
+        ret["user"]["id"] = userId;
+        ret["user"]["username"] = username;
         ret["user"]["email"] = row["email"].as<std::string>();
+        ret["user"]["role"] = userRole;
+        ret["user"]["name"] = userName;
         
         auto resp = HttpResponse::newHttpJsonResponse(ret);
+        
+        // Set refresh token in httpOnly cookie (secure in production)
+        Cookie refreshCookie("refreshToken", tokens.refreshToken);
+        refreshCookie.setMaxAge(30 * 24 * 3600); // 30 days
+        refreshCookie.setPath("/");
+        refreshCookie.setHttpOnly(true);
+        refreshCookie.setSecure(true); // Use true for HTTPS in production
+        resp->addCookie(refreshCookie);
+        
         addCorsHeaders(resp);
         callback(resp);
         
@@ -262,14 +281,33 @@ void AuthController::registerUser(const HttpRequestPtr &req, std::function<void(
         
         if (result.size() > 0) {
             auto row = result[0];
+            int userId = row["id"].as<int>();
+            std::string registeredUsername = row["username"].as<std::string>();
+            std::string registeredEmail = row["email"].as<std::string>();
+            
+            // Generate JWT tokens for automatic login
+            auto tokens = JWTAuth::generateTokenPair(userId, registeredUsername, "User");
+            
             ret["success"] = true;
             ret["message"] = "Registration successful";
-            ret["user"]["id"] = row["id"].as<int>();
-            ret["user"]["username"] = row["username"].as<std::string>();
-            ret["user"]["email"] = row["email"].as<std::string>();
+            ret["accessToken"] = tokens.accessToken;
+            ret["user"]["id"] = userId;
+            ret["user"]["username"] = registeredUsername;
+            ret["user"]["email"] = registeredEmail;
+            ret["user"]["role"] = "User";
+            ret["user"]["name"] = registeredUsername;
             
             auto resp = HttpResponse::newHttpJsonResponse(ret);
             resp->setStatusCode(k201Created);
+            
+            // Set refresh token cookie
+            Cookie refreshCookie("refreshToken", tokens.refreshToken);
+            refreshCookie.setMaxAge(30 * 24 * 3600);
+            refreshCookie.setPath("/");
+            refreshCookie.setHttpOnly(true);
+            refreshCookie.setSecure(true);
+            resp->addCookie(refreshCookie);
+            
             addCorsHeaders(resp);
             callback(resp);
         } else {
@@ -310,4 +348,111 @@ void AuthController::registerUser(const HttpRequestPtr &req, std::function<void(
             callback(resp);
         }
     }
+}
+
+// Add to end of AuthController.cc file
+
+void AuthController::refreshToken(const HttpRequestPtr &req, std::function<void(const HttpResponsePtr &)> &&callback) {
+    // Handle CORS preflight
+    if (req->method() == Options) {
+        auto resp = HttpResponse::newHttpResponse();
+        addCorsHeaders(resp);
+        callback(resp);
+        return;
+    }
+
+    Json::Value ret;
+    
+    // Get refresh token from httpOnly cookie
+    std::string refreshToken = req->getCookie("refreshToken");
+    
+    if (refreshToken.empty()) {
+        ret["success"] = false;
+        ret["message"] = "No refresh token provided";
+        auto resp = HttpResponse::newHttpJsonResponse(ret);
+        resp->setStatusCode(k401Unauthorized);
+        addCorsHeaders(resp);
+        callback(resp);
+        return;
+    }
+    
+    // Validate refresh token
+    auto decoded = JWTAuth::validateAndDecode(refreshToken);
+    
+    if (!decoded.isValid) {
+        ret["success"] = false;
+        ret["message"] = "Invalid or expired refresh token";
+        auto resp = HttpResponse::newHttpJsonResponse(ret);
+        resp->setStatusCode(k401Unauthorized);
+        addCorsHeaders(resp);
+        callback(resp);
+        return;
+    }
+    
+    // Generate new access token (and optionally rotate refresh token)
+    auto newAccessToken = JWTAuth::generateAccessToken(decoded.userId, decoded.username, decoded.role);
+    
+    // Optional: Generate new refresh token for rotation (more secure)
+    auto tokens = JWTAuth::generateTokenPair(decoded.userId, decoded.username, decoded.role);
+    
+    // Blacklist old refresh token (token rotation)
+    JWTAuth::TokenBlacklist::getInstance().addToken(refreshToken);
+    
+    ret["success"] = true;
+    ret["accessToken"] = tokens.accessToken;
+    
+    auto resp = HttpResponse::newHttpJsonResponse(ret);
+    
+    // Set new refresh token in cookie (token rotation)
+    Cookie refreshCookie("refreshToken", tokens.refreshToken);
+    refreshCookie.setMaxAge(30 * 24 * 3600);
+    refreshCookie.setPath("/");
+    refreshCookie.setHttpOnly(true);
+    refreshCookie.setSecure(true);
+    resp->addCookie(refreshCookie);
+    
+    addCorsHeaders(resp);
+    callback(resp);
+}
+
+void AuthController::revokeToken(const HttpRequestPtr &req, std::function<void(const HttpResponsePtr &)> &&callback) {
+    // Handle CORS preflight
+    if (req->method() == Options) {
+        auto resp = HttpResponse::newHttpResponse();
+        addCorsHeaders(resp);
+        callback(resp);
+        return;
+    }
+
+    Json::Value ret;
+    
+    // Get tokens from both Authorization header and cookie
+    std::string authHeader = req->getHeader("Authorization");
+    std::string accessToken = JWTAuth::extractTokenFromHeader(authHeader);
+    std::string refreshToken = req->getCookie("refreshToken");
+    
+    // Blacklist both tokens
+    if (!accessToken.empty()) {
+        JWTAuth::TokenBlacklist::getInstance().addToken(accessToken);
+    }
+    
+    if (!refreshToken.empty()) {
+        JWTAuth::TokenBlacklist::getInstance().addToken(refreshToken);
+    }
+    
+    ret["success"] = true;
+    ret["message"] = "Tokens revoked successfully";
+    
+    auto resp = HttpResponse::newHttpJsonResponse(ret);
+    
+    // Clear refresh token cookie
+    Cookie clearCookie("refreshToken", "");
+    clearCookie.setMaxAge(0);
+    clearCookie.setPath("/");
+    clearCookie.setHttpOnly(true);
+    clearCookie.setSecure(true);
+    resp->addCookie(clearCookie);
+    
+    addCorsHeaders(resp);
+    callback(resp);
 }

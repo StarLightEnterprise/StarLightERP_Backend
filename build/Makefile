@@ -166,6 +166,30 @@ controllers/AuthController.cc.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/StarLightERP_Backend_Temp.dir/build.make CMakeFiles/StarLightERP_Backend_Temp.dir/controllers/AuthController.cc.s
 .PHONY : controllers/AuthController.cc.s
 
+controllers/JWTUtils.o: controllers/JWTUtils.cc.o
+.PHONY : controllers/JWTUtils.o
+
+# target to build an object file
+controllers/JWTUtils.cc.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/StarLightERP_Backend_Temp.dir/build.make CMakeFiles/StarLightERP_Backend_Temp.dir/controllers/JWTUtils.cc.o
+.PHONY : controllers/JWTUtils.cc.o
+
+controllers/JWTUtils.i: controllers/JWTUtils.cc.i
+.PHONY : controllers/JWTUtils.i
+
+# target to preprocess a source file
+controllers/JWTUtils.cc.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/StarLightERP_Backend_Temp.dir/build.make CMakeFiles/StarLightERP_Backend_Temp.dir/controllers/JWTUtils.cc.i
+.PHONY : controllers/JWTUtils.cc.i
+
+controllers/JWTUtils.s: controllers/JWTUtils.cc.s
+.PHONY : controllers/JWTUtils.s
+
+# target to generate assembly for a file
+controllers/JWTUtils.cc.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/StarLightERP_Backend_Temp.dir/build.make CMakeFiles/StarLightERP_Backend_Temp.dir/controllers/JWTUtils.cc.s
+.PHONY : controllers/JWTUtils.cc.s
+
 controllers/TestController.o: controllers/TestController.cc.o
 .PHONY : controllers/TestController.o
 
@@ -189,6 +213,30 @@ controllers/TestController.s: controllers/TestController.cc.s
 controllers/TestController.cc.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/StarLightERP_Backend_Temp.dir/build.make CMakeFiles/StarLightERP_Backend_Temp.dir/controllers/TestController.cc.s
 .PHONY : controllers/TestController.cc.s
+
+controllers/UserController.o: controllers/UserController.cc.o
+.PHONY : controllers/UserController.o
+
+# target to build an object file
+controllers/UserController.cc.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/StarLightERP_Backend_Temp.dir/build.make CMakeFiles/StarLightERP_Backend_Temp.dir/controllers/UserController.cc.o
+.PHONY : controllers/UserController.cc.o
+
+controllers/UserController.i: controllers/UserController.cc.i
+.PHONY : controllers/UserController.i
+
+# target to preprocess a source file
+controllers/UserController.cc.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/StarLightERP_Backend_Temp.dir/build.make CMakeFiles/StarLightERP_Backend_Temp.dir/controllers/UserController.cc.i
+.PHONY : controllers/UserController.cc.i
+
+controllers/UserController.s: controllers/UserController.cc.s
+.PHONY : controllers/UserController.s
+
+# target to generate assembly for a file
+controllers/UserController.cc.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/StarLightERP_Backend_Temp.dir/build.make CMakeFiles/StarLightERP_Backend_Temp.dir/controllers/UserController.cc.s
+.PHONY : controllers/UserController.cc.s
 
 main.o: main.cc.o
 .PHONY : main.o
@@ -227,9 +275,15 @@ help:
 	@echo "... controllers/AuthController.o"
 	@echo "... controllers/AuthController.i"
 	@echo "... controllers/AuthController.s"
+	@echo "... controllers/JWTUtils.o"
+	@echo "... controllers/JWTUtils.i"
+	@echo "... controllers/JWTUtils.s"
 	@echo "... controllers/TestController.o"
 	@echo "... controllers/TestController.i"
 	@echo "... controllers/TestController.s"
+	@echo "... controllers/UserController.o"
+	@echo "... controllers/UserController.i"
+	@echo "... controllers/UserController.s"
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"

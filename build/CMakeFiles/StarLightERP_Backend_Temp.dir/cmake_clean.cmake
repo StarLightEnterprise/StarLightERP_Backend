@@ -1,8 +1,12 @@
 file(REMOVE_RECURSE
   "CMakeFiles/StarLightERP_Backend_Temp.dir/controllers/AuthController.cc.o"
   "CMakeFiles/StarLightERP_Backend_Temp.dir/controllers/AuthController.cc.o.d"
+  "CMakeFiles/StarLightERP_Backend_Temp.dir/controllers/JWTUtils.cc.o"
+  "CMakeFiles/StarLightERP_Backend_Temp.dir/controllers/JWTUtils.cc.o.d"
   "CMakeFiles/StarLightERP_Backend_Temp.dir/controllers/TestController.cc.o"
   "CMakeFiles/StarLightERP_Backend_Temp.dir/controllers/TestController.cc.o.d"
+  "CMakeFiles/StarLightERP_Backend_Temp.dir/controllers/UserController.cc.o"
+  "CMakeFiles/StarLightERP_Backend_Temp.dir/controllers/UserController.cc.o.d"
   "CMakeFiles/StarLightERP_Backend_Temp.dir/main.cc.o"
   "CMakeFiles/StarLightERP_Backend_Temp.dir/main.cc.o.d"
   "StarLightERP_Backend_Temp"

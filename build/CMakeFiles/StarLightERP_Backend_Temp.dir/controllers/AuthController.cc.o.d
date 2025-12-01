@@ -309,6 +309,7 @@ CMakeFiles/StarLightERP_Backend_Temp.dir/controllers/AuthController.cc.o: \
  /home/upendra_verma/StarLightERP/.drogon_source/install/include/drogon/nosql/RedisException.h \
  /home/upendra_verma/StarLightERP/.drogon_source/install/include/drogon/nosql/RedisSubscriber.h \
  /home/upendra_verma/StarLightERP/.drogon_source/install/include/trantor/net/Resolver.h \
+ /home/upendra_verma/StarLightERP/StarLightERP_Backend/controllers/JWTUtils.h \
  /home/upendra_verma/StarLightERP/.drogon_source/install/include/drogon/orm/Mapper.h \
  /home/upendra_verma/StarLightERP/.drogon_source/install/include/drogon/orm/Criteria.h \
  /usr/include/c++/13/regex /usr/include/c++/13/bitset \
