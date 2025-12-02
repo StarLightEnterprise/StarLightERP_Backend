@@ -1,99 +1,22 @@
 #include "AuthController.h"
 #include "JWTUtils.h"
+#include "SecurityUtils.h"
 #include <drogon/orm/Mapper.h>
 #include <drogon/HttpAppFramework.h>
 #include <trantor/utils/Logger.h>
+#include <trantor/utils/Logger.h>
 #include <regex>
-#include <openssl/sha.h>
-#include <openssl/evp.h>
-#include <iomanip>
-#include <sstream>
 
 using namespace drogon;
 using namespace drogon::orm;
 
-// Helper function to hash password using SHA-256 (built-in with OpenSSL)
-// In production, use a proper bcrypt library, but for now we'll use SHA-256 + salt
-std::string hashPassword(const std::string &password, const std::string &salt = "") {
-    std::string saltedPassword = salt + password;
-    unsigned char hash[SHA256_DIGEST_LENGTH];
-    
-    SHA256_CTX sha256;
-    SHA256_Init(&sha256);
-    SHA256_Update(&sha256, saltedPassword.c_str(), saltedPassword.length());
-    SHA256_Final(hash, &sha256);
-    
-    std::stringstream ss;
-    for(int i = 0; i < SHA256_DIGEST_LENGTH; i++) {
-        ss << std::hex << std::setw(2) << std::setfill('0') << (int)hash[i];
-    }
-    return ss.str();
-}
 
-// Generate a simple salt from username
-std::string generateSalt(const std::string &username) {
-    return "StarLightERP_" + username + "_SALT";
-}
-
-std::pair<bool, std::string> AuthController::validatePassword(const std::string &password) {
-    // Check if password is empty
-    if (password.empty()) {
-        return {false, "Password cannot be empty"};
-    }
-    
-    // Check minimum length (at least 8 characters)
-    if (password.length() < 8) {
-        return {false, "Password must be at least 8 characters long"};
-    }
-    
-    // Check for at least one uppercase letter
-    if (!std::regex_search(password, std::regex("[A-Z]"))) {
-        return {false, "Password must contain at least one uppercase letter"};
-    }
-    
-    // Check for at least one lowercase letter
-    if (!std::regex_search(password, std::regex("[a-z]"))) {
-        return {false, "Password must contain at least one lowercase letter"};
-    }
-    
-    // Check for at least one digit
-    if (!std::regex_search(password, std::regex("[0-9]"))) {
-        return {false, "Password must contain at least one number"};
-    }
-    
-    // Check for at least one special character
-    if (!std::regex_search(password, std::regex("[!@#$%^&*()_+\\-=\\[\\]{};':\"\\\\|,.<>\\/?]"))) {
-        return {false, "Password must contain at least one special character (!@#$%^&*()_+-=[]{}...)"};
-    }
-    
-    return {true, ""};
-}
-
-void AuthController::addCorsHeaders(const HttpResponsePtr &resp) {
-    // Allow requests from SvelteKit dev server and production domain
-    resp->addHeader("Access-Control-Allow-Origin", "https://starlighterp.com");
-    // Note: For multiple origins, we would need to check the Origin header and echo it back if allowed.
-    // For now, we'll assume production. If we need both dev and prod simultaneously, we need dynamic handling.
-    // Since we are moving to production, setting it to the production domain.
-    // Alternatively, we can use "*" if credentials are not required, but they are (Access-Control-Allow-Credentials: true).
-    
-    // Dynamic origin handling for dev/prod support:
-    // This is a simplified version. In a real app, check against a whitelist.
-    // resp->addHeader("Access-Control-Allow-Origin", "*"); // Cannot use * with credentials
-    
-    // Let's stick to the requested production domain for now as we are moving to production.
-    // If dev is still needed, we can switch back or implement dynamic checking.
-    
-    resp->addHeader("Access-Control-Allow-Methods", "POST, OPTIONS, GET");
-    resp->addHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
-    resp->addHeader("Access-Control-Allow-Credentials", "true");
-}
 
 void AuthController::login(const HttpRequestPtr &req, std::function<void(const HttpResponsePtr &)> &&callback) {
     // Handle CORS preflight
     if (req->method() == Options) {
         auto resp = HttpResponse::newHttpResponse();
-        addCorsHeaders(resp);
+        SecurityUtils::addCorsHeaders(resp);
         callback(resp);
         return;
     }
@@ -106,7 +29,7 @@ void AuthController::login(const HttpRequestPtr &req, std::function<void(const H
         ret["message"] = "Invalid JSON";
         auto resp = HttpResponse::newHttpJsonResponse(ret);
         resp->setStatusCode(k400BadRequest);
-        addCorsHeaders(resp);
+        SecurityUtils::addCorsHeaders(resp);
         callback(resp);
         return;
     }
@@ -119,7 +42,7 @@ void AuthController::login(const HttpRequestPtr &req, std::function<void(const H
         ret["message"] = "Username and password are required";
         auto resp = HttpResponse::newHttpJsonResponse(ret);
         resp->setStatusCode(k400BadRequest);
-        addCorsHeaders(resp);
+        SecurityUtils::addCorsHeaders(resp);
         callback(resp);
         return;
     }
@@ -141,22 +64,22 @@ void AuthController::login(const HttpRequestPtr &req, std::function<void(const H
             ret["message"] = "Invalid username or password";
             auto resp = HttpResponse::newHttpJsonResponse(ret);
             resp->setStatusCode(k401Unauthorized);
-            addCorsHeaders(resp);
+            SecurityUtils::addCorsHeaders(resp);
             callback(resp);
             return;
         }
         
         auto row = result[0];
         std::string storedHash = row["password_hash"].as<std::string>();
-        std::string salt = generateSalt(username);
-        std::string inputHash = hashPassword(password, salt);
+        std::string salt = SecurityUtils::generateSalt(username);
+        std::string inputHash = SecurityUtils::hashPassword(password, salt);
         
         if (inputHash != storedHash) {
             ret["success"] = false;
             ret["message"] = "Invalid username or password";
             auto resp = HttpResponse::newHttpJsonResponse(ret);
             resp->setStatusCode(k401Unauthorized);
-            addCorsHeaders(resp);
+            SecurityUtils::addCorsHeaders(resp);
             callback(resp);
             return;
         }
@@ -183,7 +106,7 @@ void AuthController::login(const HttpRequestPtr &req, std::function<void(const H
             ret["message"] = "No active customers assigned to this user. Please contact administrator.";
             auto resp = HttpResponse::newHttpJsonResponse(ret);
             resp->setStatusCode(k403Forbidden);
-            addCorsHeaders(resp);
+            SecurityUtils::addCorsHeaders(resp);
             callback(resp);
             return;
         }
@@ -216,7 +139,7 @@ void AuthController::login(const HttpRequestPtr &req, std::function<void(const H
             refreshCookie.setSecure(true); // Use true for HTTPS in production
             resp->addCookie(refreshCookie);
         
-            addCorsHeaders(resp);
+            SecurityUtils::addCorsHeaders(resp);
             callback(resp);
             
         } else {
@@ -243,7 +166,7 @@ void AuthController::login(const HttpRequestPtr &req, std::function<void(const H
             ret["customers"] = customers;
             
             auto resp = HttpResponse::newHttpJsonResponse(ret);
-            addCorsHeaders(resp);
+            SecurityUtils::addCorsHeaders(resp);
             callback(resp);
         }
         
@@ -253,7 +176,7 @@ void AuthController::login(const HttpRequestPtr &req, std::function<void(const H
         ret["message"] = "Database error occurred";
         auto resp = HttpResponse::newHttpJsonResponse(ret);
         resp->setStatusCode(k500InternalServerError);
-        addCorsHeaders(resp);
+        SecurityUtils::addCorsHeaders(resp);
         callback(resp);
     }
 }
@@ -262,7 +185,7 @@ void AuthController::registerUser(const HttpRequestPtr &req, std::function<void(
     // Handle CORS preflight
     if (req->method() == Options) {
         auto resp = HttpResponse::newHttpResponse();
-        addCorsHeaders(resp);
+        SecurityUtils::addCorsHeaders(resp);
         callback(resp);
         return;
     }
@@ -275,7 +198,7 @@ void AuthController::registerUser(const HttpRequestPtr &req, std::function<void(
         ret["message"] = "Invalid JSON";
         auto resp = HttpResponse::newHttpJsonResponse(ret);
         resp->setStatusCode(k400BadRequest);
-        addCorsHeaders(resp);
+        SecurityUtils::addCorsHeaders(resp);
         callback(resp);
         return;
     }
@@ -289,19 +212,19 @@ void AuthController::registerUser(const HttpRequestPtr &req, std::function<void(
         ret["message"] = "Username, password, and email are required";
         auto resp = HttpResponse::newHttpJsonResponse(ret);
         resp->setStatusCode(k400BadRequest);
-        addCorsHeaders(resp);
+        SecurityUtils::addCorsHeaders(resp);
         callback(resp);
         return;
     }
     
     // Validate password complexity
-    auto [isValid, errorMsg] = validatePassword(password);
+    auto [isValid, errorMsg] = SecurityUtils::validatePassword(password);
     if (!isValid) {
         ret["success"] = false;
         ret["message"] = errorMsg;
         auto resp = HttpResponse::newHttpJsonResponse(ret);
         resp->setStatusCode(k400BadRequest);
-        addCorsHeaders(resp);
+        SecurityUtils::addCorsHeaders(resp);
         callback(resp);
         return;
     }
@@ -313,14 +236,14 @@ void AuthController::registerUser(const HttpRequestPtr &req, std::function<void(
         ret["message"] = "Invalid email format";
         auto resp = HttpResponse::newHttpJsonResponse(ret);
         resp->setStatusCode(k400BadRequest);
-        addCorsHeaders(resp);
+        SecurityUtils::addCorsHeaders(resp);
         callback(resp);
         return;
     }
     
     // Hash password
-    std::string salt = generateSalt(username);
-    std::string passwordHash = hashPassword(password, salt);
+    std::string salt = SecurityUtils::generateSalt(username);
+    std::string passwordHash = SecurityUtils::hashPassword(password, salt);
     
     // Get database client
     auto dbClient = app().getDbClient();
@@ -365,7 +288,7 @@ void AuthController::registerUser(const HttpRequestPtr &req, std::function<void(
             refreshCookie.setSecure(true);
             resp->addCookie(refreshCookie);
             
-            addCorsHeaders(resp);
+            SecurityUtils::addCorsHeaders(resp);
             callback(resp);
             
         } else {
@@ -373,7 +296,7 @@ void AuthController::registerUser(const HttpRequestPtr &req, std::function<void(
             ret["message"] = "Registration failed";
             auto resp = HttpResponse::newHttpJsonResponse(ret);
             resp->setStatusCode(k500InternalServerError);
-            addCorsHeaders(resp);
+            SecurityUtils::addCorsHeaders(resp);
             callback(resp);
         }
         
@@ -395,14 +318,15 @@ void AuthController::registerUser(const HttpRequestPtr &req, std::function<void(
             }
             auto resp = HttpResponse::newHttpJsonResponse(ret);
             resp->setStatusCode(k409Conflict);
-            addCorsHeaders(resp);
+            resp->setStatusCode(k409Conflict);
+            SecurityUtils::addCorsHeaders(resp);
             callback(resp);
         } else {
             ret["success"] = false;
             ret["message"] = "Database error occurred";
             auto resp = HttpResponse::newHttpJsonResponse(ret);
             resp->setStatusCode(k500InternalServerError);
-            addCorsHeaders(resp);
+            SecurityUtils::addCorsHeaders(resp);
             callback(resp);
         }
     }
@@ -414,7 +338,7 @@ void AuthController::refreshToken(const HttpRequestPtr &req, std::function<void(
     // Handle CORS preflight
     if (req->method() == Options) {
         auto resp = HttpResponse::newHttpResponse();
-        addCorsHeaders(resp);
+        SecurityUtils::addCorsHeaders(resp);
         callback(resp);
         return;
     }
@@ -429,7 +353,7 @@ void AuthController::refreshToken(const HttpRequestPtr &req, std::function<void(
         ret["message"] = "No refresh token provided";
         auto resp = HttpResponse::newHttpJsonResponse(ret);
         resp->setStatusCode(k401Unauthorized);
-        addCorsHeaders(resp);
+        SecurityUtils::addCorsHeaders(resp);
         callback(resp);
         return;
     }
@@ -442,7 +366,7 @@ void AuthController::refreshToken(const HttpRequestPtr &req, std::function<void(
         ret["message"] = "Invalid or expired refresh token";
         auto resp = HttpResponse::newHttpJsonResponse(ret);
         resp->setStatusCode(k401Unauthorized);
-        addCorsHeaders(resp);
+        SecurityUtils::addCorsHeaders(resp);
         callback(resp);
         return;
     }
@@ -469,7 +393,7 @@ void AuthController::refreshToken(const HttpRequestPtr &req, std::function<void(
     refreshCookie.setSecure(true);
     resp->addCookie(refreshCookie);
     
-    addCorsHeaders(resp);
+    SecurityUtils::addCorsHeaders(resp);
     callback(resp);
 }
 
@@ -477,7 +401,7 @@ void AuthController::revokeToken(const HttpRequestPtr &req, std::function<void(c
     // Handle CORS preflight
     if (req->method() == Options) {
         auto resp = HttpResponse::newHttpResponse();
-        addCorsHeaders(resp);
+        SecurityUtils::addCorsHeaders(resp);
         callback(resp);
         return;
     }
@@ -511,7 +435,7 @@ void AuthController::revokeToken(const HttpRequestPtr &req, std::function<void(c
     clearCookie.setSecure(true);
     resp->addCookie(clearCookie);
     
-    addCorsHeaders(resp);
+    SecurityUtils::addCorsHeaders(resp);
     callback(resp);
 }
 
@@ -521,7 +445,7 @@ void AuthController::selectCustomer(const HttpRequestPtr &req, std::function<voi
     // Handle CORS preflight
     if (req->method() == Options) {
         auto resp = HttpResponse::newHttpResponse();
-        addCorsHeaders(resp);
+        SecurityUtils::addCorsHeaders(resp);
         callback(resp);
         return;
     }
@@ -534,7 +458,7 @@ void AuthController::selectCustomer(const HttpRequestPtr &req, std::function<voi
         ret["message"] = "Invalid JSON";
         auto resp = HttpResponse::newHttpJsonResponse(ret);
         resp->setStatusCode(k400BadRequest);
-        addCorsHeaders(resp);
+        SecurityUtils::addCorsHeaders(resp);
         callback(resp);
         return;
     }
@@ -547,7 +471,7 @@ void AuthController::selectCustomer(const HttpRequestPtr &req, std::function<voi
         ret["message"] = "Username and customer ID are required";
         auto resp = HttpResponse::newHttpJsonResponse(ret);
         resp->setStatusCode(k400BadRequest);
-        addCorsHeaders(resp);
+        SecurityUtils::addCorsHeaders(resp);
         callback(resp);
         return;
     }
@@ -569,7 +493,7 @@ void AuthController::selectCustomer(const HttpRequestPtr &req, std::function<voi
             ret["message"] = "User not found";
             auto resp = HttpResponse::newHttpJsonResponse(ret);
             resp->setStatusCode(k404NotFound);
-            addCorsHeaders(resp);
+            SecurityUtils::addCorsHeaders(resp);
             callback(resp);
             return;
         }
@@ -596,7 +520,7 @@ void AuthController::selectCustomer(const HttpRequestPtr &req, std::function<voi
             ret["message"] = "You do not have access to this customer";
             auto resp = HttpResponse::newHttpJsonResponse(ret);
             resp->setStatusCode(k403Forbidden);
-            addCorsHeaders(resp);
+            SecurityUtils::addCorsHeaders(resp);
             callback(resp);
             return;
         }
@@ -627,7 +551,7 @@ void AuthController::selectCustomer(const HttpRequestPtr &req, std::function<voi
         refreshCookie.setSecure(true);
         resp->addCookie(refreshCookie);
         
-        addCorsHeaders(resp);
+        SecurityUtils::addCorsHeaders(resp);
         callback(resp);
         
     } catch (const DrogonDbException &e) {
@@ -636,7 +560,7 @@ void AuthController::selectCustomer(const HttpRequestPtr &req, std::function<voi
         ret["message"] = "Database error occurred";
         auto resp = HttpResponse::newHttpJsonResponse(ret);
         resp->setStatusCode(k500InternalServerError);
-        addCorsHeaders(resp);
+        SecurityUtils::addCorsHeaders(resp);
         callback(resp);
     }
 }

@@ -28,8 +28,8 @@ class AuthController : public drogon::HttpController<AuthController>
 
   private:
     // Helper function to validate password complexity
-    std::pair<bool, std::string> validatePassword(const std::string &password);
+    // std::pair<bool, std::string> validatePassword(const std::string &password);
     
     // Helper function to add CORS headers
-    void addCorsHeaders(const HttpResponsePtr &resp);
+    // void addCorsHeaders(const HttpResponsePtr &resp);
 };

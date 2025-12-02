@@ -25,10 +25,10 @@ class UserController : public drogon::HttpController<UserController>
 
   private:
     // Helper function to validate password complexity
-    std::pair<bool, std::string> validatePassword(const std::string &password);
+    // std::pair<bool, std::string> validatePassword(const std::string &password);
     
     // Helper function to add CORS headers
-    void addCorsHeaders(const HttpResponsePtr &resp);
+    // void addCorsHeaders(const HttpResponsePtr &resp);
     
     // Helper function to get user ID from session (placeholder - in real app would use JWT/session)
     // For simplicity, we'll accept user_id or username in request for now

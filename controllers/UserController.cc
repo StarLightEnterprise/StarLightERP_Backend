@@ -1,8 +1,10 @@
 #include "UserController.h"
 #include "JWTUtils.h"
+#include "SecurityUtils.h"
 #include <drogon/orm/Mapper.h>
 #include <drogon/HttpAppFramework.h>
 #include <trantor/utils/Logger.h>
+#include <regex>
 #include <regex>
 #include <openssl/sha.h>
 #include <iomanip>
@@ -13,63 +15,7 @@
 using namespace drogon;
 using namespace drogon::orm;
 
-// Helper function to hash password using SHA-256 
-// (duplicated from AuthController - in production, move to shared utility)
-std::string hashPasswordUser(const std::string &password, const std::string &salt = "") {
-    std::string saltedPassword = salt + password;
-    unsigned char hash[SHA256_DIGEST_LENGTH];
-    
-    SHA256_CTX sha256;
-    SHA256_Init(&sha256);
-    SHA256_Update(&sha256, saltedPassword.c_str(), saltedPassword.length());
-    SHA256_Final(hash, &sha256);
-    
-    std::stringstream ss;
-    for(int i = 0; i < SHA256_DIGEST_LENGTH; i++) {
-        ss << std::hex << std::setw(2) << std::setfill('0') << (int)hash[i];
-    }
-    return ss.str();
-}
 
-// Generate salt from username
-std::string generateSaltUser(const std::string &username) {
-    return "StarLightERP_" + username + "_SALT";
-}
-
-std::pair<bool, std::string> UserController::validatePassword(const std::string &password) {
-    if (password.empty()) {
-        return {false, "Password cannot be empty"};
-    }
-    
-    if (password.length() < 8) {
-        return {false, "Password must be at least 8 characters long"};
-    }
-    
-    if (!std::regex_search(password, std::regex("[A-Z]"))) {
-        return {false, "Password must contain at least one uppercase letter"};
-    }
-    
-    if (!std::regex_search(password, std::regex("[a-z]"))) {
-        return {false, "Password must contain at least one lowercase letter"};
-    }
-    
-    if (!std::regex_search(password, std::regex("[0-9]"))) {
-        return {false, "Password must contain at least one number"};
-    }
-    
-    if (!std::regex_search(password, std::regex("[!@#$%^&*()_+\\-=\\[\\]{};':\"\\\\|,.<>\\/?]"))) {
-        return {false, "Password must contain at least one special character"};
-    }
-    
-    return {true, ""};
-}
-
-void UserController::addCorsHeaders(const HttpResponsePtr &resp) {
-    resp->addHeader("Access-Control-Allow-Origin", "https://starlighterp.com");
-    resp->addHeader("Access-Control-Allow-Methods", "POST, OPTIONS, GET, PUT");
-    resp->addHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
-    resp->addHeader("Access-Control-Allow-Credentials", "true");
-}
 
 int UserController::getUserIdFromRequest(const HttpRequestPtr &req) {
     // Extract and validate JWT token
@@ -93,7 +39,7 @@ void UserController::logout(const HttpRequestPtr &req, std::function<void(const 
     // Handle CORS preflight
     if (req->method() == Options) {
         auto resp = HttpResponse::newHttpResponse();
-        addCorsHeaders(resp);
+        SecurityUtils::addCorsHeaders(resp);
         callback(resp);
         return;
     }
@@ -112,7 +58,7 @@ void UserController::logout(const HttpRequestPtr &req, std::function<void(const 
     ret["message"] = "Logged out successfully";
     
     auto resp = HttpResponse::newHttpJsonResponse(ret);
-    addCorsHeaders(resp);
+    SecurityUtils::addCorsHeaders(resp);
     callback(resp);
 }
 
@@ -120,7 +66,7 @@ void UserController::getProfile(const HttpRequestPtr &req, std::function<void(co
     // Handle CORS preflight
     if (req->method() == Options) {
         auto resp = HttpResponse::newHttpResponse();
-        addCorsHeaders(resp);
+        SecurityUtils::addCorsHeaders(resp);
         callback(resp);
         return;
     }
@@ -135,7 +81,7 @@ void UserController::getProfile(const HttpRequestPtr &req, std::function<void(co
         ret["message"] = "Unauthorized";
         auto resp = HttpResponse::newHttpJsonResponse(ret);
         resp->setStatusCode(k401Unauthorized);
-        addCorsHeaders(resp);
+        SecurityUtils::addCorsHeaders(resp);
         callback(resp);
         return;
     }
@@ -157,7 +103,7 @@ void UserController::getProfile(const HttpRequestPtr &req, std::function<void(co
             ret["message"] = "User not found";
             auto resp = HttpResponse::newHttpJsonResponse(ret);
             resp->setStatusCode(k404NotFound);
-            addCorsHeaders(resp);
+            SecurityUtils::addCorsHeaders(resp);
             callback(resp);
             return;
         }
@@ -172,7 +118,7 @@ void UserController::getProfile(const HttpRequestPtr &req, std::function<void(co
         ret["user"]["role"] = row["role"].isNull() ? "User" : row["role"].as<std::string>();
         
         auto resp = HttpResponse::newHttpJsonResponse(ret);
-        addCorsHeaders(resp);
+        SecurityUtils::addCorsHeaders(resp);
         callback(resp);
         
     } catch (const DrogonDbException &e) {
@@ -181,7 +127,7 @@ void UserController::getProfile(const HttpRequestPtr &req, std::function<void(co
         ret["message"] = "Database error occurred";
         auto resp = HttpResponse::newHttpJsonResponse(ret);
         resp->setStatusCode(k500InternalServerError);
-        addCorsHeaders(resp);
+        SecurityUtils::addCorsHeaders(resp);
         callback(resp);
     }
 }
@@ -190,7 +136,7 @@ void UserController::updateProfile(const HttpRequestPtr &req, std::function<void
     // Handle CORS preflight
     if (req->method() == Options) {
         auto resp = HttpResponse::newHttpResponse();
-        addCorsHeaders(resp);
+        SecurityUtils::addCorsHeaders(resp);
         callback(resp);
         return;
     }
@@ -203,7 +149,7 @@ void UserController::updateProfile(const HttpRequestPtr &req, std::function<void
         ret["message"] = "Invalid JSON";
         auto resp = HttpResponse::newHttpJsonResponse(ret);
         resp->setStatusCode(k400BadRequest);
-        addCorsHeaders(resp);
+        SecurityUtils::addCorsHeaders(resp);
         callback(resp);
         return;
     }
@@ -216,7 +162,7 @@ void UserController::updateProfile(const HttpRequestPtr &req, std::function<void
         ret["message"] = "Unauthorized";
         auto resp = HttpResponse::newHttpJsonResponse(ret);
         resp->setStatusCode(k401Unauthorized);
-        addCorsHeaders(resp);
+        SecurityUtils::addCorsHeaders(resp);
         callback(resp);
         return;
     }
@@ -240,7 +186,7 @@ void UserController::updateProfile(const HttpRequestPtr &req, std::function<void
             ret["message"] = "Invalid email format";
             auto resp = HttpResponse::newHttpJsonResponse(ret);
             resp->setStatusCode(k400BadRequest);
-            addCorsHeaders(resp);
+            SecurityUtils::addCorsHeaders(resp);
             callback(resp);
             return;
         }
@@ -258,7 +204,7 @@ void UserController::updateProfile(const HttpRequestPtr &req, std::function<void
         ret["message"] = "No fields to update";
         auto resp = HttpResponse::newHttpJsonResponse(ret);
         resp->setStatusCode(k400BadRequest);
-        addCorsHeaders(resp);
+        SecurityUtils::addCorsHeaders(resp);
         callback(resp);
         return;
     }
@@ -308,14 +254,14 @@ void UserController::updateProfile(const HttpRequestPtr &req, std::function<void
             ret["user"]["role"] = row["role"].isNull() ? "User" : row["role"].as<std::string>();
             
             auto resp = HttpResponse::newHttpJsonResponse(ret);
-            addCorsHeaders(resp);
+            SecurityUtils::addCorsHeaders(resp);
             callback(resp);
         } else {
             ret["success"] = false;
             ret["message"] = "Update failed";
             auto resp = HttpResponse::newHttpJsonResponse(ret);
             resp->setStatusCode(k500InternalServerError);
-            addCorsHeaders(resp);
+            SecurityUtils::addCorsHeaders(resp);
             callback(resp);
         }
         
@@ -328,14 +274,14 @@ void UserController::updateProfile(const HttpRequestPtr &req, std::function<void
             ret["message"] = "Email already exists";
             auto resp = HttpResponse::newHttpJsonResponse(ret);
             resp->setStatusCode(k409Conflict);
-            addCorsHeaders(resp);
+            SecurityUtils::addCorsHeaders(resp);
             callback(resp);
         } else {
             ret["success"] = false;
             ret["message"] = "Database error occurred";
             auto resp = HttpResponse::newHttpJsonResponse(ret);
             resp->setStatusCode(k500InternalServerError);
-            addCorsHeaders(resp);
+            SecurityUtils::addCorsHeaders(resp);
             callback(resp);
         }
     } catch (const std::exception &e) {
@@ -344,7 +290,7 @@ void UserController::updateProfile(const HttpRequestPtr &req, std::function<void
         ret["message"] = "An error occurred";
         auto resp = HttpResponse::newHttpJsonResponse(ret);
         resp->setStatusCode(k500InternalServerError);
-        addCorsHeaders(resp);
+        SecurityUtils::addCorsHeaders(resp);
         callback(resp);
     }
 }
@@ -353,7 +299,7 @@ void UserController::resetPassword(const HttpRequestPtr &req, std::function<void
     // Handle CORS preflight
     if (req->method() == Options) {
         auto resp = HttpResponse::newHttpResponse();
-        addCorsHeaders(resp);
+        SecurityUtils::addCorsHeaders(resp);
         callback(resp);
         return;
     }
@@ -366,7 +312,7 @@ void UserController::resetPassword(const HttpRequestPtr &req, std::function<void
         ret["message"] = "Invalid JSON";
         auto resp = HttpResponse::newHttpJsonResponse(ret);
         resp->setStatusCode(k400BadRequest);
-        addCorsHeaders(resp);
+        SecurityUtils::addCorsHeaders(resp);
         callback(resp);
         return;
     }
@@ -379,19 +325,19 @@ void UserController::resetPassword(const HttpRequestPtr &req, std::function<void
         ret["message"] = "Current password and new password are required";
         auto resp = HttpResponse::newHttpJsonResponse(ret);
         resp->setStatusCode(k400BadRequest);
-        addCorsHeaders(resp);
+        SecurityUtils::addCorsHeaders(resp);
         callback(resp);
         return;
     }
     
     // Validate new password
-    auto [isValid, errorMsg] = validatePassword(newPassword);
+    auto [isValid, errorMsg] = SecurityUtils::validatePassword(newPassword);
     if (!isValid) {
         ret["success"] = false;
         ret["message"] = errorMsg;
         auto resp = HttpResponse::newHttpJsonResponse(ret);
         resp->setStatusCode(k400BadRequest);
-        addCorsHeaders(resp);
+        SecurityUtils::addCorsHeaders(resp);
         callback(resp);
         return;
     }
@@ -404,7 +350,7 @@ void UserController::resetPassword(const HttpRequestPtr &req, std::function<void
         ret["message"] = "Unauthorized";
         auto resp = HttpResponse::newHttpJsonResponse(ret);
         resp->setStatusCode(k401Unauthorized);
-        addCorsHeaders(resp);
+        SecurityUtils::addCorsHeaders(resp);
         callback(resp);
         return;
     }
@@ -426,7 +372,7 @@ void UserController::resetPassword(const HttpRequestPtr &req, std::function<void
             ret["message"] = "User not found";
             auto resp = HttpResponse::newHttpJsonResponse(ret);
             resp->setStatusCode(k404NotFound);
-            addCorsHeaders(resp);
+            SecurityUtils::addCorsHeaders(resp);
             callback(resp);
             return;
         }
@@ -436,21 +382,21 @@ void UserController::resetPassword(const HttpRequestPtr &req, std::function<void
         std::string storedHash = row["password_hash"].as<std::string>();
         
         // Verify current password
-        std::string salt = generateSaltUser(username);
-        std::string currentHash = hashPasswordUser(currentPassword, salt);
+        std::string salt = SecurityUtils::generateSalt(username);
+        std::string currentHash = SecurityUtils::hashPassword(currentPassword, salt);
         
         if (currentHash != storedHash) {
             ret["success"] = false;
             ret["message"] = "Current password is incorrect";
             auto resp = HttpResponse::newHttpJsonResponse(ret);
             resp->setStatusCode(k401Unauthorized);
-            addCorsHeaders(resp);
+            SecurityUtils::addCorsHeaders(resp);
             callback(resp);
             return;
         }
         
         // Hash new password
-        std::string newHash = hashPasswordUser(newPassword, salt);
+        std::string newHash = SecurityUtils::hashPassword(newPassword, salt);
         
         // Update password
         auto f2 = dbClient->execSqlAsyncFuture(
@@ -465,7 +411,7 @@ void UserController::resetPassword(const HttpRequestPtr &req, std::function<void
         ret["message"] = "Password reset successfully";
         
         auto resp = HttpResponse::newHttpJsonResponse(ret);
-        addCorsHeaders(resp);
+        SecurityUtils::addCorsHeaders(resp);
         callback(resp);
         
     } catch (const DrogonDbException &e) {
@@ -474,7 +420,7 @@ void UserController::resetPassword(const HttpRequestPtr &req, std::function<void
         ret["message"] = "Database error occurred";
         auto resp = HttpResponse::newHttpJsonResponse(ret);
         resp->setStatusCode(k500InternalServerError);
-        addCorsHeaders(resp);
+        SecurityUtils::addCorsHeaders(resp);
         callback(resp);
     }
 }
