@@ -1,0 +1,22 @@
+{
+    "app": {
+        "log": {
+            "log_level": "DEBUG"
+        },
+        "run_as_daemon": false
+    },
+    "db_clients": [
+        {
+            "name": "default",
+            "rdbms": "postgresql",
+            "host": "localhost",
+            "port": 5432,
+            "dbname": "starlighterp_db",
+            "user": "starlighterp_api",
+            "password": "",
+            "is_fast": false,
+            "client_encoding": "UTF8",
+            "connection_number": 1
+        }
+    ]
+}

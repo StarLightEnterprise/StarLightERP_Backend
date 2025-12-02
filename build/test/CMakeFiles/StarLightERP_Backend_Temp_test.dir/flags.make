@@ -4,7 +4,7 @@
 # compile CXX with /usr/bin/c++
 CXX_DEFINES = 
 
-CXX_INCLUDES = -isystem /home/upendra_verma/StarLightERP/.drogon_source/install/include -isystem /usr/include/jsoncpp
+CXX_INCLUDES = -I/home/upendra_verma/StarLightERP/StarLightERP_Backend/include -isystem /home/upendra_verma/StarLightERP/.drogon_source/install/include -isystem /usr/include/jsoncpp
 
 CXX_FLAGS = -std=c++17
 

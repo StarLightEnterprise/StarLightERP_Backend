@@ -130,6 +130,150 @@ StarLightERP_Backend_Temp_test/fast:
 	cd /home/upendra_verma/StarLightERP/StarLightERP_Backend/build && $(MAKE) $(MAKESILENT) -f test/CMakeFiles/StarLightERP_Backend_Temp_test.dir/build.make test/CMakeFiles/StarLightERP_Backend_Temp_test.dir/build
 .PHONY : StarLightERP_Backend_Temp_test/fast
 
+__/controllers/AuthController.o: __/controllers/AuthController.cc.o
+.PHONY : __/controllers/AuthController.o
+
+# target to build an object file
+__/controllers/AuthController.cc.o:
+	cd /home/upendra_verma/StarLightERP/StarLightERP_Backend/build && $(MAKE) $(MAKESILENT) -f test/CMakeFiles/StarLightERP_Backend_Temp_test.dir/build.make test/CMakeFiles/StarLightERP_Backend_Temp_test.dir/__/controllers/AuthController.cc.o
+.PHONY : __/controllers/AuthController.cc.o
+
+__/controllers/AuthController.i: __/controllers/AuthController.cc.i
+.PHONY : __/controllers/AuthController.i
+
+# target to preprocess a source file
+__/controllers/AuthController.cc.i:
+	cd /home/upendra_verma/StarLightERP/StarLightERP_Backend/build && $(MAKE) $(MAKESILENT) -f test/CMakeFiles/StarLightERP_Backend_Temp_test.dir/build.make test/CMakeFiles/StarLightERP_Backend_Temp_test.dir/__/controllers/AuthController.cc.i
+.PHONY : __/controllers/AuthController.cc.i
+
+__/controllers/AuthController.s: __/controllers/AuthController.cc.s
+.PHONY : __/controllers/AuthController.s
+
+# target to generate assembly for a file
+__/controllers/AuthController.cc.s:
+	cd /home/upendra_verma/StarLightERP/StarLightERP_Backend/build && $(MAKE) $(MAKESILENT) -f test/CMakeFiles/StarLightERP_Backend_Temp_test.dir/build.make test/CMakeFiles/StarLightERP_Backend_Temp_test.dir/__/controllers/AuthController.cc.s
+.PHONY : __/controllers/AuthController.cc.s
+
+__/controllers/JWTUtils.o: __/controllers/JWTUtils.cc.o
+.PHONY : __/controllers/JWTUtils.o
+
+# target to build an object file
+__/controllers/JWTUtils.cc.o:
+	cd /home/upendra_verma/StarLightERP/StarLightERP_Backend/build && $(MAKE) $(MAKESILENT) -f test/CMakeFiles/StarLightERP_Backend_Temp_test.dir/build.make test/CMakeFiles/StarLightERP_Backend_Temp_test.dir/__/controllers/JWTUtils.cc.o
+.PHONY : __/controllers/JWTUtils.cc.o
+
+__/controllers/JWTUtils.i: __/controllers/JWTUtils.cc.i
+.PHONY : __/controllers/JWTUtils.i
+
+# target to preprocess a source file
+__/controllers/JWTUtils.cc.i:
+	cd /home/upendra_verma/StarLightERP/StarLightERP_Backend/build && $(MAKE) $(MAKESILENT) -f test/CMakeFiles/StarLightERP_Backend_Temp_test.dir/build.make test/CMakeFiles/StarLightERP_Backend_Temp_test.dir/__/controllers/JWTUtils.cc.i
+.PHONY : __/controllers/JWTUtils.cc.i
+
+__/controllers/JWTUtils.s: __/controllers/JWTUtils.cc.s
+.PHONY : __/controllers/JWTUtils.s
+
+# target to generate assembly for a file
+__/controllers/JWTUtils.cc.s:
+	cd /home/upendra_verma/StarLightERP/StarLightERP_Backend/build && $(MAKE) $(MAKESILENT) -f test/CMakeFiles/StarLightERP_Backend_Temp_test.dir/build.make test/CMakeFiles/StarLightERP_Backend_Temp_test.dir/__/controllers/JWTUtils.cc.s
+.PHONY : __/controllers/JWTUtils.cc.s
+
+__/controllers/SecurityUtils.o: __/controllers/SecurityUtils.cc.o
+.PHONY : __/controllers/SecurityUtils.o
+
+# target to build an object file
+__/controllers/SecurityUtils.cc.o:
+	cd /home/upendra_verma/StarLightERP/StarLightERP_Backend/build && $(MAKE) $(MAKESILENT) -f test/CMakeFiles/StarLightERP_Backend_Temp_test.dir/build.make test/CMakeFiles/StarLightERP_Backend_Temp_test.dir/__/controllers/SecurityUtils.cc.o
+.PHONY : __/controllers/SecurityUtils.cc.o
+
+__/controllers/SecurityUtils.i: __/controllers/SecurityUtils.cc.i
+.PHONY : __/controllers/SecurityUtils.i
+
+# target to preprocess a source file
+__/controllers/SecurityUtils.cc.i:
+	cd /home/upendra_verma/StarLightERP/StarLightERP_Backend/build && $(MAKE) $(MAKESILENT) -f test/CMakeFiles/StarLightERP_Backend_Temp_test.dir/build.make test/CMakeFiles/StarLightERP_Backend_Temp_test.dir/__/controllers/SecurityUtils.cc.i
+.PHONY : __/controllers/SecurityUtils.cc.i
+
+__/controllers/SecurityUtils.s: __/controllers/SecurityUtils.cc.s
+.PHONY : __/controllers/SecurityUtils.s
+
+# target to generate assembly for a file
+__/controllers/SecurityUtils.cc.s:
+	cd /home/upendra_verma/StarLightERP/StarLightERP_Backend/build && $(MAKE) $(MAKESILENT) -f test/CMakeFiles/StarLightERP_Backend_Temp_test.dir/build.make test/CMakeFiles/StarLightERP_Backend_Temp_test.dir/__/controllers/SecurityUtils.cc.s
+.PHONY : __/controllers/SecurityUtils.cc.s
+
+__/controllers/UserController.o: __/controllers/UserController.cc.o
+.PHONY : __/controllers/UserController.o
+
+# target to build an object file
+__/controllers/UserController.cc.o:
+	cd /home/upendra_verma/StarLightERP/StarLightERP_Backend/build && $(MAKE) $(MAKESILENT) -f test/CMakeFiles/StarLightERP_Backend_Temp_test.dir/build.make test/CMakeFiles/StarLightERP_Backend_Temp_test.dir/__/controllers/UserController.cc.o
+.PHONY : __/controllers/UserController.cc.o
+
+__/controllers/UserController.i: __/controllers/UserController.cc.i
+.PHONY : __/controllers/UserController.i
+
+# target to preprocess a source file
+__/controllers/UserController.cc.i:
+	cd /home/upendra_verma/StarLightERP/StarLightERP_Backend/build && $(MAKE) $(MAKESILENT) -f test/CMakeFiles/StarLightERP_Backend_Temp_test.dir/build.make test/CMakeFiles/StarLightERP_Backend_Temp_test.dir/__/controllers/UserController.cc.i
+.PHONY : __/controllers/UserController.cc.i
+
+__/controllers/UserController.s: __/controllers/UserController.cc.s
+.PHONY : __/controllers/UserController.s
+
+# target to generate assembly for a file
+__/controllers/UserController.cc.s:
+	cd /home/upendra_verma/StarLightERP/StarLightERP_Backend/build && $(MAKE) $(MAKESILENT) -f test/CMakeFiles/StarLightERP_Backend_Temp_test.dir/build.make test/CMakeFiles/StarLightERP_Backend_Temp_test.dir/__/controllers/UserController.cc.s
+.PHONY : __/controllers/UserController.cc.s
+
+test_auth_controller.o: test_auth_controller.cc.o
+.PHONY : test_auth_controller.o
+
+# target to build an object file
+test_auth_controller.cc.o:
+	cd /home/upendra_verma/StarLightERP/StarLightERP_Backend/build && $(MAKE) $(MAKESILENT) -f test/CMakeFiles/StarLightERP_Backend_Temp_test.dir/build.make test/CMakeFiles/StarLightERP_Backend_Temp_test.dir/test_auth_controller.cc.o
+.PHONY : test_auth_controller.cc.o
+
+test_auth_controller.i: test_auth_controller.cc.i
+.PHONY : test_auth_controller.i
+
+# target to preprocess a source file
+test_auth_controller.cc.i:
+	cd /home/upendra_verma/StarLightERP/StarLightERP_Backend/build && $(MAKE) $(MAKESILENT) -f test/CMakeFiles/StarLightERP_Backend_Temp_test.dir/build.make test/CMakeFiles/StarLightERP_Backend_Temp_test.dir/test_auth_controller.cc.i
+.PHONY : test_auth_controller.cc.i
+
+test_auth_controller.s: test_auth_controller.cc.s
+.PHONY : test_auth_controller.s
+
+# target to generate assembly for a file
+test_auth_controller.cc.s:
+	cd /home/upendra_verma/StarLightERP/StarLightERP_Backend/build && $(MAKE) $(MAKESILENT) -f test/CMakeFiles/StarLightERP_Backend_Temp_test.dir/build.make test/CMakeFiles/StarLightERP_Backend_Temp_test.dir/test_auth_controller.cc.s
+.PHONY : test_auth_controller.cc.s
+
+test_jwt_utils.o: test_jwt_utils.cc.o
+.PHONY : test_jwt_utils.o
+
+# target to build an object file
+test_jwt_utils.cc.o:
+	cd /home/upendra_verma/StarLightERP/StarLightERP_Backend/build && $(MAKE) $(MAKESILENT) -f test/CMakeFiles/StarLightERP_Backend_Temp_test.dir/build.make test/CMakeFiles/StarLightERP_Backend_Temp_test.dir/test_jwt_utils.cc.o
+.PHONY : test_jwt_utils.cc.o
+
+test_jwt_utils.i: test_jwt_utils.cc.i
+.PHONY : test_jwt_utils.i
+
+# target to preprocess a source file
+test_jwt_utils.cc.i:
+	cd /home/upendra_verma/StarLightERP/StarLightERP_Backend/build && $(MAKE) $(MAKESILENT) -f test/CMakeFiles/StarLightERP_Backend_Temp_test.dir/build.make test/CMakeFiles/StarLightERP_Backend_Temp_test.dir/test_jwt_utils.cc.i
+.PHONY : test_jwt_utils.cc.i
+
+test_jwt_utils.s: test_jwt_utils.cc.s
+.PHONY : test_jwt_utils.s
+
+# target to generate assembly for a file
+test_jwt_utils.cc.s:
+	cd /home/upendra_verma/StarLightERP/StarLightERP_Backend/build && $(MAKE) $(MAKESILENT) -f test/CMakeFiles/StarLightERP_Backend_Temp_test.dir/build.make test/CMakeFiles/StarLightERP_Backend_Temp_test.dir/test_jwt_utils.cc.s
+.PHONY : test_jwt_utils.cc.s
+
 test_main.o: test_main.cc.o
 .PHONY : test_main.o
 
@@ -154,6 +298,102 @@ test_main.cc.s:
 	cd /home/upendra_verma/StarLightERP/StarLightERP_Backend/build && $(MAKE) $(MAKESILENT) -f test/CMakeFiles/StarLightERP_Backend_Temp_test.dir/build.make test/CMakeFiles/StarLightERP_Backend_Temp_test.dir/test_main.cc.s
 .PHONY : test_main.cc.s
 
+test_performance.o: test_performance.cc.o
+.PHONY : test_performance.o
+
+# target to build an object file
+test_performance.cc.o:
+	cd /home/upendra_verma/StarLightERP/StarLightERP_Backend/build && $(MAKE) $(MAKESILENT) -f test/CMakeFiles/StarLightERP_Backend_Temp_test.dir/build.make test/CMakeFiles/StarLightERP_Backend_Temp_test.dir/test_performance.cc.o
+.PHONY : test_performance.cc.o
+
+test_performance.i: test_performance.cc.i
+.PHONY : test_performance.i
+
+# target to preprocess a source file
+test_performance.cc.i:
+	cd /home/upendra_verma/StarLightERP/StarLightERP_Backend/build && $(MAKE) $(MAKESILENT) -f test/CMakeFiles/StarLightERP_Backend_Temp_test.dir/build.make test/CMakeFiles/StarLightERP_Backend_Temp_test.dir/test_performance.cc.i
+.PHONY : test_performance.cc.i
+
+test_performance.s: test_performance.cc.s
+.PHONY : test_performance.s
+
+# target to generate assembly for a file
+test_performance.cc.s:
+	cd /home/upendra_verma/StarLightERP/StarLightERP_Backend/build && $(MAKE) $(MAKESILENT) -f test/CMakeFiles/StarLightERP_Backend_Temp_test.dir/build.make test/CMakeFiles/StarLightERP_Backend_Temp_test.dir/test_performance.cc.s
+.PHONY : test_performance.cc.s
+
+test_security_utils.o: test_security_utils.cc.o
+.PHONY : test_security_utils.o
+
+# target to build an object file
+test_security_utils.cc.o:
+	cd /home/upendra_verma/StarLightERP/StarLightERP_Backend/build && $(MAKE) $(MAKESILENT) -f test/CMakeFiles/StarLightERP_Backend_Temp_test.dir/build.make test/CMakeFiles/StarLightERP_Backend_Temp_test.dir/test_security_utils.cc.o
+.PHONY : test_security_utils.cc.o
+
+test_security_utils.i: test_security_utils.cc.i
+.PHONY : test_security_utils.i
+
+# target to preprocess a source file
+test_security_utils.cc.i:
+	cd /home/upendra_verma/StarLightERP/StarLightERP_Backend/build && $(MAKE) $(MAKESILENT) -f test/CMakeFiles/StarLightERP_Backend_Temp_test.dir/build.make test/CMakeFiles/StarLightERP_Backend_Temp_test.dir/test_security_utils.cc.i
+.PHONY : test_security_utils.cc.i
+
+test_security_utils.s: test_security_utils.cc.s
+.PHONY : test_security_utils.s
+
+# target to generate assembly for a file
+test_security_utils.cc.s:
+	cd /home/upendra_verma/StarLightERP/StarLightERP_Backend/build && $(MAKE) $(MAKESILENT) -f test/CMakeFiles/StarLightERP_Backend_Temp_test.dir/build.make test/CMakeFiles/StarLightERP_Backend_Temp_test.dir/test_security_utils.cc.s
+.PHONY : test_security_utils.cc.s
+
+test_tenant_middleware.o: test_tenant_middleware.cc.o
+.PHONY : test_tenant_middleware.o
+
+# target to build an object file
+test_tenant_middleware.cc.o:
+	cd /home/upendra_verma/StarLightERP/StarLightERP_Backend/build && $(MAKE) $(MAKESILENT) -f test/CMakeFiles/StarLightERP_Backend_Temp_test.dir/build.make test/CMakeFiles/StarLightERP_Backend_Temp_test.dir/test_tenant_middleware.cc.o
+.PHONY : test_tenant_middleware.cc.o
+
+test_tenant_middleware.i: test_tenant_middleware.cc.i
+.PHONY : test_tenant_middleware.i
+
+# target to preprocess a source file
+test_tenant_middleware.cc.i:
+	cd /home/upendra_verma/StarLightERP/StarLightERP_Backend/build && $(MAKE) $(MAKESILENT) -f test/CMakeFiles/StarLightERP_Backend_Temp_test.dir/build.make test/CMakeFiles/StarLightERP_Backend_Temp_test.dir/test_tenant_middleware.cc.i
+.PHONY : test_tenant_middleware.cc.i
+
+test_tenant_middleware.s: test_tenant_middleware.cc.s
+.PHONY : test_tenant_middleware.s
+
+# target to generate assembly for a file
+test_tenant_middleware.cc.s:
+	cd /home/upendra_verma/StarLightERP/StarLightERP_Backend/build && $(MAKE) $(MAKESILENT) -f test/CMakeFiles/StarLightERP_Backend_Temp_test.dir/build.make test/CMakeFiles/StarLightERP_Backend_Temp_test.dir/test_tenant_middleware.cc.s
+.PHONY : test_tenant_middleware.cc.s
+
+test_user_controller.o: test_user_controller.cc.o
+.PHONY : test_user_controller.o
+
+# target to build an object file
+test_user_controller.cc.o:
+	cd /home/upendra_verma/StarLightERP/StarLightERP_Backend/build && $(MAKE) $(MAKESILENT) -f test/CMakeFiles/StarLightERP_Backend_Temp_test.dir/build.make test/CMakeFiles/StarLightERP_Backend_Temp_test.dir/test_user_controller.cc.o
+.PHONY : test_user_controller.cc.o
+
+test_user_controller.i: test_user_controller.cc.i
+.PHONY : test_user_controller.i
+
+# target to preprocess a source file
+test_user_controller.cc.i:
+	cd /home/upendra_verma/StarLightERP/StarLightERP_Backend/build && $(MAKE) $(MAKESILENT) -f test/CMakeFiles/StarLightERP_Backend_Temp_test.dir/build.make test/CMakeFiles/StarLightERP_Backend_Temp_test.dir/test_user_controller.cc.i
+.PHONY : test_user_controller.cc.i
+
+test_user_controller.s: test_user_controller.cc.s
+.PHONY : test_user_controller.s
+
+# target to generate assembly for a file
+test_user_controller.cc.s:
+	cd /home/upendra_verma/StarLightERP/StarLightERP_Backend/build && $(MAKE) $(MAKESILENT) -f test/CMakeFiles/StarLightERP_Backend_Temp_test.dir/build.make test/CMakeFiles/StarLightERP_Backend_Temp_test.dir/test_user_controller.cc.s
+.PHONY : test_user_controller.cc.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -163,9 +403,39 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... StarLightERP_Backend_Temp_test"
+	@echo "... __/controllers/AuthController.o"
+	@echo "... __/controllers/AuthController.i"
+	@echo "... __/controllers/AuthController.s"
+	@echo "... __/controllers/JWTUtils.o"
+	@echo "... __/controllers/JWTUtils.i"
+	@echo "... __/controllers/JWTUtils.s"
+	@echo "... __/controllers/SecurityUtils.o"
+	@echo "... __/controllers/SecurityUtils.i"
+	@echo "... __/controllers/SecurityUtils.s"
+	@echo "... __/controllers/UserController.o"
+	@echo "... __/controllers/UserController.i"
+	@echo "... __/controllers/UserController.s"
+	@echo "... test_auth_controller.o"
+	@echo "... test_auth_controller.i"
+	@echo "... test_auth_controller.s"
+	@echo "... test_jwt_utils.o"
+	@echo "... test_jwt_utils.i"
+	@echo "... test_jwt_utils.s"
 	@echo "... test_main.o"
 	@echo "... test_main.i"
 	@echo "... test_main.s"
+	@echo "... test_performance.o"
+	@echo "... test_performance.i"
+	@echo "... test_performance.s"
+	@echo "... test_security_utils.o"
+	@echo "... test_security_utils.i"
+	@echo "... test_security_utils.s"
+	@echo "... test_tenant_middleware.o"
+	@echo "... test_tenant_middleware.i"
+	@echo "... test_tenant_middleware.s"
+	@echo "... test_user_controller.o"
+	@echo "... test_user_controller.i"
+	@echo "... test_user_controller.s"
 .PHONY : help
 
 

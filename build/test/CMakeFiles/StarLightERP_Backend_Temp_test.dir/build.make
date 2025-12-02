@@ -83,14 +83,174 @@ test/CMakeFiles/StarLightERP_Backend_Temp_test.dir/test_main.cc.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/StarLightERP_Backend_Temp_test.dir/test_main.cc.s"
 	cd /home/upendra_verma/StarLightERP/StarLightERP_Backend/build/test && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/upendra_verma/StarLightERP/StarLightERP_Backend/test/test_main.cc -o CMakeFiles/StarLightERP_Backend_Temp_test.dir/test_main.cc.s
 
+test/CMakeFiles/StarLightERP_Backend_Temp_test.dir/test_auth_controller.cc.o: test/CMakeFiles/StarLightERP_Backend_Temp_test.dir/flags.make
+test/CMakeFiles/StarLightERP_Backend_Temp_test.dir/test_auth_controller.cc.o: /home/upendra_verma/StarLightERP/StarLightERP_Backend/test/test_auth_controller.cc
+test/CMakeFiles/StarLightERP_Backend_Temp_test.dir/test_auth_controller.cc.o: test/CMakeFiles/StarLightERP_Backend_Temp_test.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/upendra_verma/StarLightERP/StarLightERP_Backend/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object test/CMakeFiles/StarLightERP_Backend_Temp_test.dir/test_auth_controller.cc.o"
+	cd /home/upendra_verma/StarLightERP/StarLightERP_Backend/build/test && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT test/CMakeFiles/StarLightERP_Backend_Temp_test.dir/test_auth_controller.cc.o -MF CMakeFiles/StarLightERP_Backend_Temp_test.dir/test_auth_controller.cc.o.d -o CMakeFiles/StarLightERP_Backend_Temp_test.dir/test_auth_controller.cc.o -c /home/upendra_verma/StarLightERP/StarLightERP_Backend/test/test_auth_controller.cc
+
+test/CMakeFiles/StarLightERP_Backend_Temp_test.dir/test_auth_controller.cc.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/StarLightERP_Backend_Temp_test.dir/test_auth_controller.cc.i"
+	cd /home/upendra_verma/StarLightERP/StarLightERP_Backend/build/test && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/upendra_verma/StarLightERP/StarLightERP_Backend/test/test_auth_controller.cc > CMakeFiles/StarLightERP_Backend_Temp_test.dir/test_auth_controller.cc.i
+
+test/CMakeFiles/StarLightERP_Backend_Temp_test.dir/test_auth_controller.cc.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/StarLightERP_Backend_Temp_test.dir/test_auth_controller.cc.s"
+	cd /home/upendra_verma/StarLightERP/StarLightERP_Backend/build/test && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/upendra_verma/StarLightERP/StarLightERP_Backend/test/test_auth_controller.cc -o CMakeFiles/StarLightERP_Backend_Temp_test.dir/test_auth_controller.cc.s
+
+test/CMakeFiles/StarLightERP_Backend_Temp_test.dir/test_user_controller.cc.o: test/CMakeFiles/StarLightERP_Backend_Temp_test.dir/flags.make
+test/CMakeFiles/StarLightERP_Backend_Temp_test.dir/test_user_controller.cc.o: /home/upendra_verma/StarLightERP/StarLightERP_Backend/test/test_user_controller.cc
+test/CMakeFiles/StarLightERP_Backend_Temp_test.dir/test_user_controller.cc.o: test/CMakeFiles/StarLightERP_Backend_Temp_test.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/upendra_verma/StarLightERP/StarLightERP_Backend/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object test/CMakeFiles/StarLightERP_Backend_Temp_test.dir/test_user_controller.cc.o"
+	cd /home/upendra_verma/StarLightERP/StarLightERP_Backend/build/test && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT test/CMakeFiles/StarLightERP_Backend_Temp_test.dir/test_user_controller.cc.o -MF CMakeFiles/StarLightERP_Backend_Temp_test.dir/test_user_controller.cc.o.d -o CMakeFiles/StarLightERP_Backend_Temp_test.dir/test_user_controller.cc.o -c /home/upendra_verma/StarLightERP/StarLightERP_Backend/test/test_user_controller.cc
+
+test/CMakeFiles/StarLightERP_Backend_Temp_test.dir/test_user_controller.cc.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/StarLightERP_Backend_Temp_test.dir/test_user_controller.cc.i"
+	cd /home/upendra_verma/StarLightERP/StarLightERP_Backend/build/test && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/upendra_verma/StarLightERP/StarLightERP_Backend/test/test_user_controller.cc > CMakeFiles/StarLightERP_Backend_Temp_test.dir/test_user_controller.cc.i
+
+test/CMakeFiles/StarLightERP_Backend_Temp_test.dir/test_user_controller.cc.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/StarLightERP_Backend_Temp_test.dir/test_user_controller.cc.s"
+	cd /home/upendra_verma/StarLightERP/StarLightERP_Backend/build/test && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/upendra_verma/StarLightERP/StarLightERP_Backend/test/test_user_controller.cc -o CMakeFiles/StarLightERP_Backend_Temp_test.dir/test_user_controller.cc.s
+
+test/CMakeFiles/StarLightERP_Backend_Temp_test.dir/test_jwt_utils.cc.o: test/CMakeFiles/StarLightERP_Backend_Temp_test.dir/flags.make
+test/CMakeFiles/StarLightERP_Backend_Temp_test.dir/test_jwt_utils.cc.o: /home/upendra_verma/StarLightERP/StarLightERP_Backend/test/test_jwt_utils.cc
+test/CMakeFiles/StarLightERP_Backend_Temp_test.dir/test_jwt_utils.cc.o: test/CMakeFiles/StarLightERP_Backend_Temp_test.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/upendra_verma/StarLightERP/StarLightERP_Backend/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object test/CMakeFiles/StarLightERP_Backend_Temp_test.dir/test_jwt_utils.cc.o"
+	cd /home/upendra_verma/StarLightERP/StarLightERP_Backend/build/test && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT test/CMakeFiles/StarLightERP_Backend_Temp_test.dir/test_jwt_utils.cc.o -MF CMakeFiles/StarLightERP_Backend_Temp_test.dir/test_jwt_utils.cc.o.d -o CMakeFiles/StarLightERP_Backend_Temp_test.dir/test_jwt_utils.cc.o -c /home/upendra_verma/StarLightERP/StarLightERP_Backend/test/test_jwt_utils.cc
+
+test/CMakeFiles/StarLightERP_Backend_Temp_test.dir/test_jwt_utils.cc.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/StarLightERP_Backend_Temp_test.dir/test_jwt_utils.cc.i"
+	cd /home/upendra_verma/StarLightERP/StarLightERP_Backend/build/test && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/upendra_verma/StarLightERP/StarLightERP_Backend/test/test_jwt_utils.cc > CMakeFiles/StarLightERP_Backend_Temp_test.dir/test_jwt_utils.cc.i
+
+test/CMakeFiles/StarLightERP_Backend_Temp_test.dir/test_jwt_utils.cc.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/StarLightERP_Backend_Temp_test.dir/test_jwt_utils.cc.s"
+	cd /home/upendra_verma/StarLightERP/StarLightERP_Backend/build/test && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/upendra_verma/StarLightERP/StarLightERP_Backend/test/test_jwt_utils.cc -o CMakeFiles/StarLightERP_Backend_Temp_test.dir/test_jwt_utils.cc.s
+
+test/CMakeFiles/StarLightERP_Backend_Temp_test.dir/test_security_utils.cc.o: test/CMakeFiles/StarLightERP_Backend_Temp_test.dir/flags.make
+test/CMakeFiles/StarLightERP_Backend_Temp_test.dir/test_security_utils.cc.o: /home/upendra_verma/StarLightERP/StarLightERP_Backend/test/test_security_utils.cc
+test/CMakeFiles/StarLightERP_Backend_Temp_test.dir/test_security_utils.cc.o: test/CMakeFiles/StarLightERP_Backend_Temp_test.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/upendra_verma/StarLightERP/StarLightERP_Backend/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object test/CMakeFiles/StarLightERP_Backend_Temp_test.dir/test_security_utils.cc.o"
+	cd /home/upendra_verma/StarLightERP/StarLightERP_Backend/build/test && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT test/CMakeFiles/StarLightERP_Backend_Temp_test.dir/test_security_utils.cc.o -MF CMakeFiles/StarLightERP_Backend_Temp_test.dir/test_security_utils.cc.o.d -o CMakeFiles/StarLightERP_Backend_Temp_test.dir/test_security_utils.cc.o -c /home/upendra_verma/StarLightERP/StarLightERP_Backend/test/test_security_utils.cc
+
+test/CMakeFiles/StarLightERP_Backend_Temp_test.dir/test_security_utils.cc.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/StarLightERP_Backend_Temp_test.dir/test_security_utils.cc.i"
+	cd /home/upendra_verma/StarLightERP/StarLightERP_Backend/build/test && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/upendra_verma/StarLightERP/StarLightERP_Backend/test/test_security_utils.cc > CMakeFiles/StarLightERP_Backend_Temp_test.dir/test_security_utils.cc.i
+
+test/CMakeFiles/StarLightERP_Backend_Temp_test.dir/test_security_utils.cc.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/StarLightERP_Backend_Temp_test.dir/test_security_utils.cc.s"
+	cd /home/upendra_verma/StarLightERP/StarLightERP_Backend/build/test && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/upendra_verma/StarLightERP/StarLightERP_Backend/test/test_security_utils.cc -o CMakeFiles/StarLightERP_Backend_Temp_test.dir/test_security_utils.cc.s
+
+test/CMakeFiles/StarLightERP_Backend_Temp_test.dir/test_tenant_middleware.cc.o: test/CMakeFiles/StarLightERP_Backend_Temp_test.dir/flags.make
+test/CMakeFiles/StarLightERP_Backend_Temp_test.dir/test_tenant_middleware.cc.o: /home/upendra_verma/StarLightERP/StarLightERP_Backend/test/test_tenant_middleware.cc
+test/CMakeFiles/StarLightERP_Backend_Temp_test.dir/test_tenant_middleware.cc.o: test/CMakeFiles/StarLightERP_Backend_Temp_test.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/upendra_verma/StarLightERP/StarLightERP_Backend/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object test/CMakeFiles/StarLightERP_Backend_Temp_test.dir/test_tenant_middleware.cc.o"
+	cd /home/upendra_verma/StarLightERP/StarLightERP_Backend/build/test && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT test/CMakeFiles/StarLightERP_Backend_Temp_test.dir/test_tenant_middleware.cc.o -MF CMakeFiles/StarLightERP_Backend_Temp_test.dir/test_tenant_middleware.cc.o.d -o CMakeFiles/StarLightERP_Backend_Temp_test.dir/test_tenant_middleware.cc.o -c /home/upendra_verma/StarLightERP/StarLightERP_Backend/test/test_tenant_middleware.cc
+
+test/CMakeFiles/StarLightERP_Backend_Temp_test.dir/test_tenant_middleware.cc.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/StarLightERP_Backend_Temp_test.dir/test_tenant_middleware.cc.i"
+	cd /home/upendra_verma/StarLightERP/StarLightERP_Backend/build/test && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/upendra_verma/StarLightERP/StarLightERP_Backend/test/test_tenant_middleware.cc > CMakeFiles/StarLightERP_Backend_Temp_test.dir/test_tenant_middleware.cc.i
+
+test/CMakeFiles/StarLightERP_Backend_Temp_test.dir/test_tenant_middleware.cc.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/StarLightERP_Backend_Temp_test.dir/test_tenant_middleware.cc.s"
+	cd /home/upendra_verma/StarLightERP/StarLightERP_Backend/build/test && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/upendra_verma/StarLightERP/StarLightERP_Backend/test/test_tenant_middleware.cc -o CMakeFiles/StarLightERP_Backend_Temp_test.dir/test_tenant_middleware.cc.s
+
+test/CMakeFiles/StarLightERP_Backend_Temp_test.dir/test_performance.cc.o: test/CMakeFiles/StarLightERP_Backend_Temp_test.dir/flags.make
+test/CMakeFiles/StarLightERP_Backend_Temp_test.dir/test_performance.cc.o: /home/upendra_verma/StarLightERP/StarLightERP_Backend/test/test_performance.cc
+test/CMakeFiles/StarLightERP_Backend_Temp_test.dir/test_performance.cc.o: test/CMakeFiles/StarLightERP_Backend_Temp_test.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/upendra_verma/StarLightERP/StarLightERP_Backend/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object test/CMakeFiles/StarLightERP_Backend_Temp_test.dir/test_performance.cc.o"
+	cd /home/upendra_verma/StarLightERP/StarLightERP_Backend/build/test && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT test/CMakeFiles/StarLightERP_Backend_Temp_test.dir/test_performance.cc.o -MF CMakeFiles/StarLightERP_Backend_Temp_test.dir/test_performance.cc.o.d -o CMakeFiles/StarLightERP_Backend_Temp_test.dir/test_performance.cc.o -c /home/upendra_verma/StarLightERP/StarLightERP_Backend/test/test_performance.cc
+
+test/CMakeFiles/StarLightERP_Backend_Temp_test.dir/test_performance.cc.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/StarLightERP_Backend_Temp_test.dir/test_performance.cc.i"
+	cd /home/upendra_verma/StarLightERP/StarLightERP_Backend/build/test && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/upendra_verma/StarLightERP/StarLightERP_Backend/test/test_performance.cc > CMakeFiles/StarLightERP_Backend_Temp_test.dir/test_performance.cc.i
+
+test/CMakeFiles/StarLightERP_Backend_Temp_test.dir/test_performance.cc.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/StarLightERP_Backend_Temp_test.dir/test_performance.cc.s"
+	cd /home/upendra_verma/StarLightERP/StarLightERP_Backend/build/test && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/upendra_verma/StarLightERP/StarLightERP_Backend/test/test_performance.cc -o CMakeFiles/StarLightERP_Backend_Temp_test.dir/test_performance.cc.s
+
+test/CMakeFiles/StarLightERP_Backend_Temp_test.dir/__/controllers/JWTUtils.cc.o: test/CMakeFiles/StarLightERP_Backend_Temp_test.dir/flags.make
+test/CMakeFiles/StarLightERP_Backend_Temp_test.dir/__/controllers/JWTUtils.cc.o: /home/upendra_verma/StarLightERP/StarLightERP_Backend/controllers/JWTUtils.cc
+test/CMakeFiles/StarLightERP_Backend_Temp_test.dir/__/controllers/JWTUtils.cc.o: test/CMakeFiles/StarLightERP_Backend_Temp_test.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/upendra_verma/StarLightERP/StarLightERP_Backend/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building CXX object test/CMakeFiles/StarLightERP_Backend_Temp_test.dir/__/controllers/JWTUtils.cc.o"
+	cd /home/upendra_verma/StarLightERP/StarLightERP_Backend/build/test && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT test/CMakeFiles/StarLightERP_Backend_Temp_test.dir/__/controllers/JWTUtils.cc.o -MF CMakeFiles/StarLightERP_Backend_Temp_test.dir/__/controllers/JWTUtils.cc.o.d -o CMakeFiles/StarLightERP_Backend_Temp_test.dir/__/controllers/JWTUtils.cc.o -c /home/upendra_verma/StarLightERP/StarLightERP_Backend/controllers/JWTUtils.cc
+
+test/CMakeFiles/StarLightERP_Backend_Temp_test.dir/__/controllers/JWTUtils.cc.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/StarLightERP_Backend_Temp_test.dir/__/controllers/JWTUtils.cc.i"
+	cd /home/upendra_verma/StarLightERP/StarLightERP_Backend/build/test && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/upendra_verma/StarLightERP/StarLightERP_Backend/controllers/JWTUtils.cc > CMakeFiles/StarLightERP_Backend_Temp_test.dir/__/controllers/JWTUtils.cc.i
+
+test/CMakeFiles/StarLightERP_Backend_Temp_test.dir/__/controllers/JWTUtils.cc.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/StarLightERP_Backend_Temp_test.dir/__/controllers/JWTUtils.cc.s"
+	cd /home/upendra_verma/StarLightERP/StarLightERP_Backend/build/test && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/upendra_verma/StarLightERP/StarLightERP_Backend/controllers/JWTUtils.cc -o CMakeFiles/StarLightERP_Backend_Temp_test.dir/__/controllers/JWTUtils.cc.s
+
+test/CMakeFiles/StarLightERP_Backend_Temp_test.dir/__/controllers/SecurityUtils.cc.o: test/CMakeFiles/StarLightERP_Backend_Temp_test.dir/flags.make
+test/CMakeFiles/StarLightERP_Backend_Temp_test.dir/__/controllers/SecurityUtils.cc.o: /home/upendra_verma/StarLightERP/StarLightERP_Backend/controllers/SecurityUtils.cc
+test/CMakeFiles/StarLightERP_Backend_Temp_test.dir/__/controllers/SecurityUtils.cc.o: test/CMakeFiles/StarLightERP_Backend_Temp_test.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/upendra_verma/StarLightERP/StarLightERP_Backend/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building CXX object test/CMakeFiles/StarLightERP_Backend_Temp_test.dir/__/controllers/SecurityUtils.cc.o"
+	cd /home/upendra_verma/StarLightERP/StarLightERP_Backend/build/test && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT test/CMakeFiles/StarLightERP_Backend_Temp_test.dir/__/controllers/SecurityUtils.cc.o -MF CMakeFiles/StarLightERP_Backend_Temp_test.dir/__/controllers/SecurityUtils.cc.o.d -o CMakeFiles/StarLightERP_Backend_Temp_test.dir/__/controllers/SecurityUtils.cc.o -c /home/upendra_verma/StarLightERP/StarLightERP_Backend/controllers/SecurityUtils.cc
+
+test/CMakeFiles/StarLightERP_Backend_Temp_test.dir/__/controllers/SecurityUtils.cc.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/StarLightERP_Backend_Temp_test.dir/__/controllers/SecurityUtils.cc.i"
+	cd /home/upendra_verma/StarLightERP/StarLightERP_Backend/build/test && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/upendra_verma/StarLightERP/StarLightERP_Backend/controllers/SecurityUtils.cc > CMakeFiles/StarLightERP_Backend_Temp_test.dir/__/controllers/SecurityUtils.cc.i
+
+test/CMakeFiles/StarLightERP_Backend_Temp_test.dir/__/controllers/SecurityUtils.cc.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/StarLightERP_Backend_Temp_test.dir/__/controllers/SecurityUtils.cc.s"
+	cd /home/upendra_verma/StarLightERP/StarLightERP_Backend/build/test && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/upendra_verma/StarLightERP/StarLightERP_Backend/controllers/SecurityUtils.cc -o CMakeFiles/StarLightERP_Backend_Temp_test.dir/__/controllers/SecurityUtils.cc.s
+
+test/CMakeFiles/StarLightERP_Backend_Temp_test.dir/__/controllers/AuthController.cc.o: test/CMakeFiles/StarLightERP_Backend_Temp_test.dir/flags.make
+test/CMakeFiles/StarLightERP_Backend_Temp_test.dir/__/controllers/AuthController.cc.o: /home/upendra_verma/StarLightERP/StarLightERP_Backend/controllers/AuthController.cc
+test/CMakeFiles/StarLightERP_Backend_Temp_test.dir/__/controllers/AuthController.cc.o: test/CMakeFiles/StarLightERP_Backend_Temp_test.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/upendra_verma/StarLightERP/StarLightERP_Backend/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building CXX object test/CMakeFiles/StarLightERP_Backend_Temp_test.dir/__/controllers/AuthController.cc.o"
+	cd /home/upendra_verma/StarLightERP/StarLightERP_Backend/build/test && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT test/CMakeFiles/StarLightERP_Backend_Temp_test.dir/__/controllers/AuthController.cc.o -MF CMakeFiles/StarLightERP_Backend_Temp_test.dir/__/controllers/AuthController.cc.o.d -o CMakeFiles/StarLightERP_Backend_Temp_test.dir/__/controllers/AuthController.cc.o -c /home/upendra_verma/StarLightERP/StarLightERP_Backend/controllers/AuthController.cc
+
+test/CMakeFiles/StarLightERP_Backend_Temp_test.dir/__/controllers/AuthController.cc.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/StarLightERP_Backend_Temp_test.dir/__/controllers/AuthController.cc.i"
+	cd /home/upendra_verma/StarLightERP/StarLightERP_Backend/build/test && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/upendra_verma/StarLightERP/StarLightERP_Backend/controllers/AuthController.cc > CMakeFiles/StarLightERP_Backend_Temp_test.dir/__/controllers/AuthController.cc.i
+
+test/CMakeFiles/StarLightERP_Backend_Temp_test.dir/__/controllers/AuthController.cc.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/StarLightERP_Backend_Temp_test.dir/__/controllers/AuthController.cc.s"
+	cd /home/upendra_verma/StarLightERP/StarLightERP_Backend/build/test && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/upendra_verma/StarLightERP/StarLightERP_Backend/controllers/AuthController.cc -o CMakeFiles/StarLightERP_Backend_Temp_test.dir/__/controllers/AuthController.cc.s
+
+test/CMakeFiles/StarLightERP_Backend_Temp_test.dir/__/controllers/UserController.cc.o: test/CMakeFiles/StarLightERP_Backend_Temp_test.dir/flags.make
+test/CMakeFiles/StarLightERP_Backend_Temp_test.dir/__/controllers/UserController.cc.o: /home/upendra_verma/StarLightERP/StarLightERP_Backend/controllers/UserController.cc
+test/CMakeFiles/StarLightERP_Backend_Temp_test.dir/__/controllers/UserController.cc.o: test/CMakeFiles/StarLightERP_Backend_Temp_test.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/upendra_verma/StarLightERP/StarLightERP_Backend/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Building CXX object test/CMakeFiles/StarLightERP_Backend_Temp_test.dir/__/controllers/UserController.cc.o"
+	cd /home/upendra_verma/StarLightERP/StarLightERP_Backend/build/test && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT test/CMakeFiles/StarLightERP_Backend_Temp_test.dir/__/controllers/UserController.cc.o -MF CMakeFiles/StarLightERP_Backend_Temp_test.dir/__/controllers/UserController.cc.o.d -o CMakeFiles/StarLightERP_Backend_Temp_test.dir/__/controllers/UserController.cc.o -c /home/upendra_verma/StarLightERP/StarLightERP_Backend/controllers/UserController.cc
+
+test/CMakeFiles/StarLightERP_Backend_Temp_test.dir/__/controllers/UserController.cc.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/StarLightERP_Backend_Temp_test.dir/__/controllers/UserController.cc.i"
+	cd /home/upendra_verma/StarLightERP/StarLightERP_Backend/build/test && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/upendra_verma/StarLightERP/StarLightERP_Backend/controllers/UserController.cc > CMakeFiles/StarLightERP_Backend_Temp_test.dir/__/controllers/UserController.cc.i
+
+test/CMakeFiles/StarLightERP_Backend_Temp_test.dir/__/controllers/UserController.cc.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/StarLightERP_Backend_Temp_test.dir/__/controllers/UserController.cc.s"
+	cd /home/upendra_verma/StarLightERP/StarLightERP_Backend/build/test && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/upendra_verma/StarLightERP/StarLightERP_Backend/controllers/UserController.cc -o CMakeFiles/StarLightERP_Backend_Temp_test.dir/__/controllers/UserController.cc.s
+
 # Object files for target StarLightERP_Backend_Temp_test
 StarLightERP_Backend_Temp_test_OBJECTS = \
-"CMakeFiles/StarLightERP_Backend_Temp_test.dir/test_main.cc.o"
+"CMakeFiles/StarLightERP_Backend_Temp_test.dir/test_main.cc.o" \
+"CMakeFiles/StarLightERP_Backend_Temp_test.dir/test_auth_controller.cc.o" \
+"CMakeFiles/StarLightERP_Backend_Temp_test.dir/test_user_controller.cc.o" \
+"CMakeFiles/StarLightERP_Backend_Temp_test.dir/test_jwt_utils.cc.o" \
+"CMakeFiles/StarLightERP_Backend_Temp_test.dir/test_security_utils.cc.o" \
+"CMakeFiles/StarLightERP_Backend_Temp_test.dir/test_tenant_middleware.cc.o" \
+"CMakeFiles/StarLightERP_Backend_Temp_test.dir/test_performance.cc.o" \
+"CMakeFiles/StarLightERP_Backend_Temp_test.dir/__/controllers/JWTUtils.cc.o" \
+"CMakeFiles/StarLightERP_Backend_Temp_test.dir/__/controllers/SecurityUtils.cc.o" \
+"CMakeFiles/StarLightERP_Backend_Temp_test.dir/__/controllers/AuthController.cc.o" \
+"CMakeFiles/StarLightERP_Backend_Temp_test.dir/__/controllers/UserController.cc.o"
 
 # External object files for target StarLightERP_Backend_Temp_test
 StarLightERP_Backend_Temp_test_EXTERNAL_OBJECTS =
 
 test/StarLightERP_Backend_Temp_test: test/CMakeFiles/StarLightERP_Backend_Temp_test.dir/test_main.cc.o
+test/StarLightERP_Backend_Temp_test: test/CMakeFiles/StarLightERP_Backend_Temp_test.dir/test_auth_controller.cc.o
+test/StarLightERP_Backend_Temp_test: test/CMakeFiles/StarLightERP_Backend_Temp_test.dir/test_user_controller.cc.o
+test/StarLightERP_Backend_Temp_test: test/CMakeFiles/StarLightERP_Backend_Temp_test.dir/test_jwt_utils.cc.o
+test/StarLightERP_Backend_Temp_test: test/CMakeFiles/StarLightERP_Backend_Temp_test.dir/test_security_utils.cc.o
+test/StarLightERP_Backend_Temp_test: test/CMakeFiles/StarLightERP_Backend_Temp_test.dir/test_tenant_middleware.cc.o
+test/StarLightERP_Backend_Temp_test: test/CMakeFiles/StarLightERP_Backend_Temp_test.dir/test_performance.cc.o
+test/StarLightERP_Backend_Temp_test: test/CMakeFiles/StarLightERP_Backend_Temp_test.dir/__/controllers/JWTUtils.cc.o
+test/StarLightERP_Backend_Temp_test: test/CMakeFiles/StarLightERP_Backend_Temp_test.dir/__/controllers/SecurityUtils.cc.o
+test/StarLightERP_Backend_Temp_test: test/CMakeFiles/StarLightERP_Backend_Temp_test.dir/__/controllers/AuthController.cc.o
+test/StarLightERP_Backend_Temp_test: test/CMakeFiles/StarLightERP_Backend_Temp_test.dir/__/controllers/UserController.cc.o
 test/StarLightERP_Backend_Temp_test: test/CMakeFiles/StarLightERP_Backend_Temp_test.dir/build.make
 test/StarLightERP_Backend_Temp_test: /home/upendra_verma/StarLightERP/.drogon_source/install/lib/libdrogon.a
 test/StarLightERP_Backend_Temp_test: /home/upendra_verma/StarLightERP/.drogon_source/install/lib/libtrantor.a
@@ -101,7 +261,7 @@ test/StarLightERP_Backend_Temp_test: /usr/lib/x86_64-linux-gnu/libuuid.so
 test/StarLightERP_Backend_Temp_test: /usr/lib/x86_64-linux-gnu/libpq.so
 test/StarLightERP_Backend_Temp_test: /usr/lib/x86_64-linux-gnu/libz.so
 test/StarLightERP_Backend_Temp_test: test/CMakeFiles/StarLightERP_Backend_Temp_test.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/home/upendra_verma/StarLightERP/StarLightERP_Backend/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking CXX executable StarLightERP_Backend_Temp_test"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/home/upendra_verma/StarLightERP/StarLightERP_Backend/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_12) "Linking CXX executable StarLightERP_Backend_Temp_test"
 	cd /home/upendra_verma/StarLightERP/StarLightERP_Backend/build/test && $(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/StarLightERP_Backend_Temp_test.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.

@@ -18,6 +18,8 @@ int main(int argc, char** argv)
     std::thread thr([&]() {
         // Queues the promise to be fulfilled after starting the loop
         app().getLoop()->queueInLoop([&p1]() { p1.set_value(); });
+        // Load config file
+        app().loadConfigFile("config.json");
         app().run();
     });
 
