@@ -142,6 +142,30 @@ StarLightERP_Backend_Temp_test/fast:
 	$(MAKE) $(MAKESILENT) -f test/CMakeFiles/StarLightERP_Backend_Temp_test.dir/build.make test/CMakeFiles/StarLightERP_Backend_Temp_test.dir/build
 .PHONY : StarLightERP_Backend_Temp_test/fast
 
+controllers/AppsController.o: controllers/AppsController.cc.o
+.PHONY : controllers/AppsController.o
+
+# target to build an object file
+controllers/AppsController.cc.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/StarLightERP_Backend_Temp.dir/build.make CMakeFiles/StarLightERP_Backend_Temp.dir/controllers/AppsController.cc.o
+.PHONY : controllers/AppsController.cc.o
+
+controllers/AppsController.i: controllers/AppsController.cc.i
+.PHONY : controllers/AppsController.i
+
+# target to preprocess a source file
+controllers/AppsController.cc.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/StarLightERP_Backend_Temp.dir/build.make CMakeFiles/StarLightERP_Backend_Temp.dir/controllers/AppsController.cc.i
+.PHONY : controllers/AppsController.cc.i
+
+controllers/AppsController.s: controllers/AppsController.cc.s
+.PHONY : controllers/AppsController.s
+
+# target to generate assembly for a file
+controllers/AppsController.cc.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/StarLightERP_Backend_Temp.dir/build.make CMakeFiles/StarLightERP_Backend_Temp.dir/controllers/AppsController.cc.s
+.PHONY : controllers/AppsController.cc.s
+
 controllers/AuthController.o: controllers/AuthController.cc.o
 .PHONY : controllers/AuthController.o
 
@@ -165,6 +189,54 @@ controllers/AuthController.s: controllers/AuthController.cc.s
 controllers/AuthController.cc.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/StarLightERP_Backend_Temp.dir/build.make CMakeFiles/StarLightERP_Backend_Temp.dir/controllers/AuthController.cc.s
 .PHONY : controllers/AuthController.cc.s
+
+controllers/CustomerController.o: controllers/CustomerController.cc.o
+.PHONY : controllers/CustomerController.o
+
+# target to build an object file
+controllers/CustomerController.cc.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/StarLightERP_Backend_Temp.dir/build.make CMakeFiles/StarLightERP_Backend_Temp.dir/controllers/CustomerController.cc.o
+.PHONY : controllers/CustomerController.cc.o
+
+controllers/CustomerController.i: controllers/CustomerController.cc.i
+.PHONY : controllers/CustomerController.i
+
+# target to preprocess a source file
+controllers/CustomerController.cc.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/StarLightERP_Backend_Temp.dir/build.make CMakeFiles/StarLightERP_Backend_Temp.dir/controllers/CustomerController.cc.i
+.PHONY : controllers/CustomerController.cc.i
+
+controllers/CustomerController.s: controllers/CustomerController.cc.s
+.PHONY : controllers/CustomerController.s
+
+# target to generate assembly for a file
+controllers/CustomerController.cc.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/StarLightERP_Backend_Temp.dir/build.make CMakeFiles/StarLightERP_Backend_Temp.dir/controllers/CustomerController.cc.s
+.PHONY : controllers/CustomerController.cc.s
+
+controllers/HealthController.o: controllers/HealthController.cc.o
+.PHONY : controllers/HealthController.o
+
+# target to build an object file
+controllers/HealthController.cc.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/StarLightERP_Backend_Temp.dir/build.make CMakeFiles/StarLightERP_Backend_Temp.dir/controllers/HealthController.cc.o
+.PHONY : controllers/HealthController.cc.o
+
+controllers/HealthController.i: controllers/HealthController.cc.i
+.PHONY : controllers/HealthController.i
+
+# target to preprocess a source file
+controllers/HealthController.cc.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/StarLightERP_Backend_Temp.dir/build.make CMakeFiles/StarLightERP_Backend_Temp.dir/controllers/HealthController.cc.i
+.PHONY : controllers/HealthController.cc.i
+
+controllers/HealthController.s: controllers/HealthController.cc.s
+.PHONY : controllers/HealthController.s
+
+# target to generate assembly for a file
+controllers/HealthController.cc.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/StarLightERP_Backend_Temp.dir/build.make CMakeFiles/StarLightERP_Backend_Temp.dir/controllers/HealthController.cc.s
+.PHONY : controllers/HealthController.cc.s
 
 controllers/JWTUtils.o: controllers/JWTUtils.cc.o
 .PHONY : controllers/JWTUtils.o
@@ -320,9 +392,18 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... StarLightERP_Backend_Temp"
 	@echo "... StarLightERP_Backend_Temp_test"
+	@echo "... controllers/AppsController.o"
+	@echo "... controllers/AppsController.i"
+	@echo "... controllers/AppsController.s"
 	@echo "... controllers/AuthController.o"
 	@echo "... controllers/AuthController.i"
 	@echo "... controllers/AuthController.s"
+	@echo "... controllers/CustomerController.o"
+	@echo "... controllers/CustomerController.i"
+	@echo "... controllers/CustomerController.s"
+	@echo "... controllers/HealthController.o"
+	@echo "... controllers/HealthController.i"
+	@echo "... controllers/HealthController.s"
 	@echo "... controllers/JWTUtils.o"
 	@echo "... controllers/JWTUtils.i"
 	@echo "... controllers/JWTUtils.s"

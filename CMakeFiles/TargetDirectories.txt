@@ -1,0 +1,6 @@
+/home/upendra_verma/StarLightERP/StarLightERP_Backend/CMakeFiles/StarLightERP_Backend_Temp.dir
+/home/upendra_verma/StarLightERP/StarLightERP_Backend/CMakeFiles/edit_cache.dir
+/home/upendra_verma/StarLightERP/StarLightERP_Backend/CMakeFiles/rebuild_cache.dir
+/home/upendra_verma/StarLightERP/StarLightERP_Backend/test/CMakeFiles/StarLightERP_Backend_Temp_test.dir
+/home/upendra_verma/StarLightERP/StarLightERP_Backend/test/CMakeFiles/edit_cache.dir
+/home/upendra_verma/StarLightERP/StarLightERP_Backend/test/CMakeFiles/rebuild_cache.dir

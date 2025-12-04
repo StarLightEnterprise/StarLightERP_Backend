@@ -3,6 +3,7 @@
 #include <iomanip>
 #include <sstream>
 #include <regex>
+#include <trantor/utils/Logger.h>
 
 std::string SecurityUtils::hashPassword(const std::string &password, const std::string &salt) {
     std::string saltedPassword = salt + password;
@@ -52,9 +53,46 @@ std::pair<bool, std::string> SecurityUtils::validatePassword(const std::string &
     return {true, ""};
 }
 
-void SecurityUtils::addCorsHeaders(const drogon::HttpResponsePtr &resp) {
-    resp->addHeader("Access-Control-Allow-Origin", "https://starlighterp.com");
-    resp->addHeader("Access-Control-Allow-Methods", "POST, OPTIONS, GET, PUT");
+void SecurityUtils::addCorsHeaders(const drogon::HttpResponsePtr &resp, const drogon::HttpRequestPtr &req) {
+    // Get the Origin header from the request
+    std::string origin = req->getHeader("Origin");
+    
+    LOG_DEBUG << "Received Origin: " << origin;
+
+    // List of allowed origins (add more as needed)
+    std::vector<std::string> allowedOrigins = {
+        "https://starlighterp.com",
+        "http://localhost:5173",
+        "http://localhost:4173",
+        "http://localhost:3000",
+        "https://127.0.0.1:8080",
+        "http://127.0.0.1:8080"
+    };
+    
+    // Check if the origin is allowed
+    bool isAllowed = false;
+    for (const auto& allowedOrigin : allowedOrigins) {
+        if (origin == allowedOrigin) {
+            isAllowed = true;
+            break;
+        }
+    }
+    
+    LOG_DEBUG << "Origin allowed: " << (isAllowed ? "true" : "false");
+
+    // Set CORS headers
+    resp->addHeader("Access-Control-Allow-Methods", "POST, OPTIONS, GET, PUT, DELETE");
     resp->addHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
-    resp->addHeader("Access-Control-Allow-Credentials", "true");
+    
+    // IMPORTANT: Cannot use wildcard (*) with credentials:true
+    // Only set origin and credentials if we have a valid, specific origin
+    if (isAllowed && !origin.empty()) {
+        resp->addHeader("Access-Control-Allow-Origin", origin);
+        resp->addHeader("Access-Control-Allow-Credentials", "true");
+    } else if (!origin.empty()) {
+        // Origin provided but not in allowed list - don't set any origin header
+        // This will cause CORS to fail, which is correct behavior
+        LOG_DEBUG << "Origin not in allowed list, not setting Access-Control-Allow-Origin";
+    }
+    // If origin is empty (same-origin request), no CORS headers needed
 }

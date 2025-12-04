@@ -19,7 +19,7 @@ if [ ! -d "$BUILD_DIR" ]; then
 fi
 
 cd $BUILD_DIR
-cmake ..
+cmake -DDrogon_DIR=/home/upendra_verma/StarLightERP/.drogon_source/install/lib/cmake/Drogon -DTrantor_DIR=/home/upendra_verma/StarLightERP/.drogon_source/install/lib/cmake/Trantor ..
 cd ..
 
 # 3. Build Backend

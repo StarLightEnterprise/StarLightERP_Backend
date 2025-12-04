@@ -16,7 +16,7 @@ void AuthController::login(const HttpRequestPtr &req, std::function<void(const H
     // Handle CORS preflight
     if (req->method() == Options) {
         auto resp = HttpResponse::newHttpResponse();
-        SecurityUtils::addCorsHeaders(resp);
+        SecurityUtils::addCorsHeaders(resp, req);
         callback(resp);
         return;
     }
@@ -29,7 +29,7 @@ void AuthController::login(const HttpRequestPtr &req, std::function<void(const H
         ret["message"] = "Invalid JSON";
         auto resp = HttpResponse::newHttpJsonResponse(ret);
         resp->setStatusCode(k400BadRequest);
-        SecurityUtils::addCorsHeaders(resp);
+        SecurityUtils::addCorsHeaders(resp, req);
         callback(resp);
         return;
     }
@@ -42,7 +42,7 @@ void AuthController::login(const HttpRequestPtr &req, std::function<void(const H
         ret["message"] = "Username and password are required";
         auto resp = HttpResponse::newHttpJsonResponse(ret);
         resp->setStatusCode(k400BadRequest);
-        SecurityUtils::addCorsHeaders(resp);
+        SecurityUtils::addCorsHeaders(resp, req);
         callback(resp);
         return;
     }
@@ -64,7 +64,7 @@ void AuthController::login(const HttpRequestPtr &req, std::function<void(const H
             ret["message"] = "Invalid username or password";
             auto resp = HttpResponse::newHttpJsonResponse(ret);
             resp->setStatusCode(k401Unauthorized);
-            SecurityUtils::addCorsHeaders(resp);
+            SecurityUtils::addCorsHeaders(resp, req);
             callback(resp);
             return;
         }
@@ -79,7 +79,7 @@ void AuthController::login(const HttpRequestPtr &req, std::function<void(const H
             ret["message"] = "Invalid username or password";
             auto resp = HttpResponse::newHttpJsonResponse(ret);
             resp->setStatusCode(k401Unauthorized);
-            SecurityUtils::addCorsHeaders(resp);
+            SecurityUtils::addCorsHeaders(resp, req);
             callback(resp);
             return;
         }
@@ -106,7 +106,7 @@ void AuthController::login(const HttpRequestPtr &req, std::function<void(const H
             ret["message"] = "No active customers assigned to this user. Please contact administrator.";
             auto resp = HttpResponse::newHttpJsonResponse(ret);
             resp->setStatusCode(k403Forbidden);
-            SecurityUtils::addCorsHeaders(resp);
+            SecurityUtils::addCorsHeaders(resp, req);
             callback(resp);
             return;
         }
@@ -128,6 +128,10 @@ void AuthController::login(const HttpRequestPtr &req, std::function<void(const H
             ret["user"]["name"] = userName;
             ret["user"]["customerId"] = customerId;
             ret["user"]["customerName"] = customerName;
+            
+            // Check super admin
+            auto superCheck = dbClient->execSqlSync("SELECT 1 FROM super_users WHERE user_id = $1", userId);
+            ret["user"]["is_super_admin"] = (superCheck.size() > 0);
         
             auto resp = HttpResponse::newHttpJsonResponse(ret);
         
@@ -139,7 +143,7 @@ void AuthController::login(const HttpRequestPtr &req, std::function<void(const H
             refreshCookie.setSecure(true); // Use true for HTTPS in production
             resp->addCookie(refreshCookie);
         
-            SecurityUtils::addCorsHeaders(resp);
+            SecurityUtils::addCorsHeaders(resp, req);
             callback(resp);
             
         } else {
@@ -152,6 +156,10 @@ void AuthController::login(const HttpRequestPtr &req, std::function<void(const H
             ret["user"]["email"] = row["email"].as<std::string>();
             ret["user"]["role"] = userRole;
             ret["user"]["name"] = userName;
+            
+            // Check super admin
+            auto superCheck = dbClient->execSqlSync("SELECT 1 FROM super_users WHERE user_id = $1", userId);
+            ret["user"]["is_super_admin"] = (superCheck.size() > 0);
             
             Json::Value customers(Json::arrayValue);
             for (size_t i = 0; i < customerResult.size(); i++) {
@@ -166,7 +174,7 @@ void AuthController::login(const HttpRequestPtr &req, std::function<void(const H
             ret["customers"] = customers;
             
             auto resp = HttpResponse::newHttpJsonResponse(ret);
-            SecurityUtils::addCorsHeaders(resp);
+            SecurityUtils::addCorsHeaders(resp, req);
             callback(resp);
         }
         
@@ -176,7 +184,7 @@ void AuthController::login(const HttpRequestPtr &req, std::function<void(const H
         ret["message"] = "Database error occurred";
         auto resp = HttpResponse::newHttpJsonResponse(ret);
         resp->setStatusCode(k500InternalServerError);
-        SecurityUtils::addCorsHeaders(resp);
+        SecurityUtils::addCorsHeaders(resp, req);
         callback(resp);
     }
 }
@@ -185,7 +193,7 @@ void AuthController::registerUser(const HttpRequestPtr &req, std::function<void(
     // Handle CORS preflight
     if (req->method() == Options) {
         auto resp = HttpResponse::newHttpResponse();
-        SecurityUtils::addCorsHeaders(resp);
+        SecurityUtils::addCorsHeaders(resp, req);
         callback(resp);
         return;
     }
@@ -198,7 +206,7 @@ void AuthController::registerUser(const HttpRequestPtr &req, std::function<void(
         ret["message"] = "Invalid JSON";
         auto resp = HttpResponse::newHttpJsonResponse(ret);
         resp->setStatusCode(k400BadRequest);
-        SecurityUtils::addCorsHeaders(resp);
+        SecurityUtils::addCorsHeaders(resp, req);
         callback(resp);
         return;
     }
@@ -212,7 +220,7 @@ void AuthController::registerUser(const HttpRequestPtr &req, std::function<void(
         ret["message"] = "Username, password, and email are required";
         auto resp = HttpResponse::newHttpJsonResponse(ret);
         resp->setStatusCode(k400BadRequest);
-        SecurityUtils::addCorsHeaders(resp);
+        SecurityUtils::addCorsHeaders(resp, req);
         callback(resp);
         return;
     }
@@ -224,7 +232,7 @@ void AuthController::registerUser(const HttpRequestPtr &req, std::function<void(
         ret["message"] = errorMsg;
         auto resp = HttpResponse::newHttpJsonResponse(ret);
         resp->setStatusCode(k400BadRequest);
-        SecurityUtils::addCorsHeaders(resp);
+        SecurityUtils::addCorsHeaders(resp, req);
         callback(resp);
         return;
     }
@@ -236,7 +244,7 @@ void AuthController::registerUser(const HttpRequestPtr &req, std::function<void(
         ret["message"] = "Invalid email format";
         auto resp = HttpResponse::newHttpJsonResponse(ret);
         resp->setStatusCode(k400BadRequest);
-        SecurityUtils::addCorsHeaders(resp);
+        SecurityUtils::addCorsHeaders(resp, req);
         callback(resp);
         return;
     }
@@ -288,7 +296,7 @@ void AuthController::registerUser(const HttpRequestPtr &req, std::function<void(
             refreshCookie.setSecure(true);
             resp->addCookie(refreshCookie);
             
-            SecurityUtils::addCorsHeaders(resp);
+            SecurityUtils::addCorsHeaders(resp, req);
             callback(resp);
             
         } else {
@@ -296,7 +304,7 @@ void AuthController::registerUser(const HttpRequestPtr &req, std::function<void(
             ret["message"] = "Registration failed";
             auto resp = HttpResponse::newHttpJsonResponse(ret);
             resp->setStatusCode(k500InternalServerError);
-            SecurityUtils::addCorsHeaders(resp);
+            SecurityUtils::addCorsHeaders(resp, req);
             callback(resp);
         }
         
@@ -319,14 +327,14 @@ void AuthController::registerUser(const HttpRequestPtr &req, std::function<void(
             auto resp = HttpResponse::newHttpJsonResponse(ret);
             resp->setStatusCode(k409Conflict);
             resp->setStatusCode(k409Conflict);
-            SecurityUtils::addCorsHeaders(resp);
+            SecurityUtils::addCorsHeaders(resp, req);
             callback(resp);
         } else {
             ret["success"] = false;
             ret["message"] = "Database error occurred";
             auto resp = HttpResponse::newHttpJsonResponse(ret);
             resp->setStatusCode(k500InternalServerError);
-            SecurityUtils::addCorsHeaders(resp);
+            SecurityUtils::addCorsHeaders(resp, req);
             callback(resp);
         }
     }
@@ -338,7 +346,7 @@ void AuthController::refreshToken(const HttpRequestPtr &req, std::function<void(
     // Handle CORS preflight
     if (req->method() == Options) {
         auto resp = HttpResponse::newHttpResponse();
-        SecurityUtils::addCorsHeaders(resp);
+        SecurityUtils::addCorsHeaders(resp, req);
         callback(resp);
         return;
     }
@@ -353,7 +361,7 @@ void AuthController::refreshToken(const HttpRequestPtr &req, std::function<void(
         ret["message"] = "No refresh token provided";
         auto resp = HttpResponse::newHttpJsonResponse(ret);
         resp->setStatusCode(k401Unauthorized);
-        SecurityUtils::addCorsHeaders(resp);
+        SecurityUtils::addCorsHeaders(resp, req);
         callback(resp);
         return;
     }
@@ -366,7 +374,7 @@ void AuthController::refreshToken(const HttpRequestPtr &req, std::function<void(
         ret["message"] = "Invalid or expired refresh token";
         auto resp = HttpResponse::newHttpJsonResponse(ret);
         resp->setStatusCode(k401Unauthorized);
-        SecurityUtils::addCorsHeaders(resp);
+        SecurityUtils::addCorsHeaders(resp, req);
         callback(resp);
         return;
     }
@@ -393,7 +401,7 @@ void AuthController::refreshToken(const HttpRequestPtr &req, std::function<void(
     refreshCookie.setSecure(true);
     resp->addCookie(refreshCookie);
     
-    SecurityUtils::addCorsHeaders(resp);
+    SecurityUtils::addCorsHeaders(resp, req);
     callback(resp);
 }
 
@@ -401,7 +409,7 @@ void AuthController::revokeToken(const HttpRequestPtr &req, std::function<void(c
     // Handle CORS preflight
     if (req->method() == Options) {
         auto resp = HttpResponse::newHttpResponse();
-        SecurityUtils::addCorsHeaders(resp);
+        SecurityUtils::addCorsHeaders(resp, req);
         callback(resp);
         return;
     }
@@ -435,7 +443,7 @@ void AuthController::revokeToken(const HttpRequestPtr &req, std::function<void(c
     clearCookie.setSecure(true);
     resp->addCookie(clearCookie);
     
-    SecurityUtils::addCorsHeaders(resp);
+    SecurityUtils::addCorsHeaders(resp, req);
     callback(resp);
 }
 
@@ -445,7 +453,7 @@ void AuthController::selectCustomer(const HttpRequestPtr &req, std::function<voi
     // Handle CORS preflight
     if (req->method() == Options) {
         auto resp = HttpResponse::newHttpResponse();
-        SecurityUtils::addCorsHeaders(resp);
+        SecurityUtils::addCorsHeaders(resp, req);
         callback(resp);
         return;
     }
@@ -458,7 +466,7 @@ void AuthController::selectCustomer(const HttpRequestPtr &req, std::function<voi
         ret["message"] = "Invalid JSON";
         auto resp = HttpResponse::newHttpJsonResponse(ret);
         resp->setStatusCode(k400BadRequest);
-        SecurityUtils::addCorsHeaders(resp);
+        SecurityUtils::addCorsHeaders(resp, req);
         callback(resp);
         return;
     }
@@ -471,7 +479,7 @@ void AuthController::selectCustomer(const HttpRequestPtr &req, std::function<voi
         ret["message"] = "Username and customer ID are required";
         auto resp = HttpResponse::newHttpJsonResponse(ret);
         resp->setStatusCode(k400BadRequest);
-        SecurityUtils::addCorsHeaders(resp);
+        SecurityUtils::addCorsHeaders(resp, req);
         callback(resp);
         return;
     }
@@ -493,7 +501,7 @@ void AuthController::selectCustomer(const HttpRequestPtr &req, std::function<voi
             ret["message"] = "User not found";
             auto resp = HttpResponse::newHttpJsonResponse(ret);
             resp->setStatusCode(k404NotFound);
-            SecurityUtils::addCorsHeaders(resp);
+            SecurityUtils::addCorsHeaders(resp, req);
             callback(resp);
             return;
         }
@@ -520,7 +528,7 @@ void AuthController::selectCustomer(const HttpRequestPtr &req, std::function<voi
             ret["message"] = "You do not have access to this customer";
             auto resp = HttpResponse::newHttpJsonResponse(ret);
             resp->setStatusCode(k403Forbidden);
-            SecurityUtils::addCorsHeaders(resp);
+            SecurityUtils::addCorsHeaders(resp, req);
             callback(resp);
             return;
         }
@@ -541,6 +549,10 @@ void AuthController::selectCustomer(const HttpRequestPtr &req, std::function<voi
         ret["user"]["customerId"] = customerId;
         ret["user"]["customerName"] = customerName;
         
+        // Check super admin
+        auto superCheck = dbClient->execSqlSync("SELECT 1 FROM super_users WHERE user_id = $1", userId);
+        ret["user"]["is_super_admin"] = (superCheck.size() > 0);
+        
         auto resp = HttpResponse::newHttpJsonResponse(ret);
         
         // Set refresh token in httpOnly cookie
@@ -551,7 +563,7 @@ void AuthController::selectCustomer(const HttpRequestPtr &req, std::function<voi
         refreshCookie.setSecure(true);
         resp->addCookie(refreshCookie);
         
-        SecurityUtils::addCorsHeaders(resp);
+        SecurityUtils::addCorsHeaders(resp, req);
         callback(resp);
         
     } catch (const DrogonDbException &e) {
@@ -560,7 +572,7 @@ void AuthController::selectCustomer(const HttpRequestPtr &req, std::function<voi
         ret["message"] = "Database error occurred";
         auto resp = HttpResponse::newHttpJsonResponse(ret);
         resp->setStatusCode(k500InternalServerError);
-        SecurityUtils::addCorsHeaders(resp);
+        SecurityUtils::addCorsHeaders(resp, req);
         callback(resp);
     }
 }
