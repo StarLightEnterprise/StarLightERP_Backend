@@ -84,26 +84,26 @@ void AuthController::login(const HttpRequestPtr &req, std::function<void(const H
             return;
         }
         
-        // Login successful - query user's customers
+        // Login successful - query user's tenants
         int userId = row["id"].as<int>();
         std::string userRole = row["role"].isNull() ? "User" : row["role"].as<std::string>();
         std::string userName = row["name"].isNull() ? row["username"].as<std::string>() : row["name"].as<std::string>();
         
-        // Query customer_user table to get user's customers
-        auto customerFuture = dbClient->execSqlAsyncFuture(
-            "SELECT cu.customer_id, c.customer_name, c.customer_category, c.customer_type, cu.is_primary "
-            "FROM customer_user cu "
-            "JOIN customers c ON cu.customer_id = c.customer_id "
-            "WHERE cu.user_id = $1 AND c.is_active = true "
-            "ORDER BY cu.is_primary DESC, c.customer_name",
+        // Query tenant_user table to get user's tenants
+        auto tenantFuture = dbClient->execSqlAsyncFuture(
+            "SELECT tu.tenant_id, t.tenant_name, t.tenant_category, t.tenant_type, tu.is_primary "
+            "FROM tenant_user tu "
+            "JOIN tenants t ON tu.tenant_id = t.tenant_id "
+            "WHERE tu.user_id = $1 AND t.is_active = true "
+            "ORDER BY tu.is_primary DESC, t.tenant_name",
             userId
         );
         
-        auto customerResult = customerFuture.get();
+        auto tenantResult = tenantFuture.get();
         
-        if (customerResult.size() == 0) {
+        if (tenantResult.size() == 0) {
             ret["success"] = false;
-            ret["message"] = "No active customers assigned to this user. Please contact administrator.";
+            ret["message"] = "No active tenants assigned to this user. Please contact administrator.";
             auto resp = HttpResponse::newHttpJsonResponse(ret);
             resp->setStatusCode(k403Forbidden);
             SecurityUtils::addCorsHeaders(resp, req);
@@ -111,12 +111,12 @@ void AuthController::login(const HttpRequestPtr &req, std::function<void(const H
             return;
         }
         
-        if (customerResult.size() == 1) {
-            // Single customer - auto-select and generate JWT
-            int customerId = customerResult[0]["customer_id"].as<int>();
-            std::string customerName = customerResult[0]["customer_name"].as<std::string>();
+        if (tenantResult.size() == 1) {
+            // Single tenant - auto-select and generate JWT
+            int tenantId = tenantResult[0]["tenant_id"].as<int>();
+            std::string tenantName = tenantResult[0]["tenant_name"].as<std::string>();
             
-            auto tokens = JWTAuth::generateTokenPair(userId, username, userRole, customerId);
+            auto tokens = JWTAuth::generateTokenPair(userId, username, userRole, tenantId);
         
             ret["success"] = true;
             ret["message"] = "Login successful";
@@ -126,8 +126,8 @@ void AuthController::login(const HttpRequestPtr &req, std::function<void(const H
             ret["user"]["email"] = row["email"].as<std::string>();
             ret["user"]["role"] = userRole;
             ret["user"]["name"] = userName;
-            ret["user"]["customerId"] = customerId;
-            ret["user"]["customerName"] = customerName;
+            ret["user"]["tenantId"] = tenantId;
+            ret["user"]["tenantName"] = tenantName;
             
             // Check super admin
             auto superCheck = dbClient->execSqlSync("SELECT 1 FROM super_users WHERE user_id = $1", userId);
@@ -147,10 +147,10 @@ void AuthController::login(const HttpRequestPtr &req, std::function<void(const H
             callback(resp);
             
         } else {
-            // Multiple customers - return list for selection
+            // Multiple tenants - return list for selection
             ret["success"] = true;
-            ret["message"] = "Please select a customer";
-            ret["requiresCustomerSelection"] = true;
+            ret["message"] = "Please select a tenant";
+            ret["requiresTenantSelection"] = true;
             ret["user"]["id"] = userId;
             ret["user"]["username"] = username;
             ret["user"]["email"] = row["email"].as<std::string>();
@@ -161,17 +161,17 @@ void AuthController::login(const HttpRequestPtr &req, std::function<void(const H
             auto superCheck = dbClient->execSqlSync("SELECT 1 FROM super_users WHERE user_id = $1", userId);
             ret["user"]["is_super_admin"] = (superCheck.size() > 0);
             
-            Json::Value customers(Json::arrayValue);
-            for (size_t i = 0; i < customerResult.size(); i++) {
-                Json::Value customer;
-                customer["customerId"] = customerResult[i]["customer_id"].as<int>();
-                customer["customerName"] = customerResult[i]["customer_name"].as<std::string>();
-                customer["customerCategory"] = customerResult[i]["customer_category"].as<std::string>();
-                customer["customerType"] = customerResult[i]["customer_type"].as<std::string>();
-                customer["isPrimary"] = customerResult[i]["is_primary"].as<bool>();
-                customers.append(customer);
+            Json::Value tenants(Json::arrayValue);
+            for (size_t i = 0; i < tenantResult.size(); i++) {
+                Json::Value tenant;
+                tenant["tenantId"] = tenantResult[i]["tenant_id"].as<int>();
+                tenant["tenantName"] = tenantResult[i]["tenant_name"].as<std::string>();
+                tenant["tenantCategory"] = tenantResult[i]["tenant_category"].as<std::string>();
+                tenant["tenantType"] = tenantResult[i]["tenant_type"].as<std::string>();
+                tenant["isPrimary"] = tenantResult[i]["is_primary"].as<bool>();
+                tenants.append(tenant);
             }
-            ret["customers"] = customers;
+            ret["tenants"] = tenants;
             
             auto resp = HttpResponse::newHttpJsonResponse(ret);
             SecurityUtils::addCorsHeaders(resp, req);
@@ -379,11 +379,11 @@ void AuthController::refreshToken(const HttpRequestPtr &req, std::function<void(
         return;
     }
     
-    // Generate new tokens with same customer_id
-    auto newAccessToken = JWTAuth::generateAccessToken(decoded.userId, decoded.username, decoded.role, decoded.customerId);
+    // Generate new tokens with same tenant_id
+    auto newAccessToken = JWTAuth::generateAccessToken(decoded.userId, decoded.username, decoded.role, decoded.tenantId);
     
     // Optional: Generate new refresh token for rotation (more secure)
-    auto tokens = JWTAuth::generateTokenPair(decoded.userId, decoded.username, decoded.role, decoded.customerId);
+    auto tokens = JWTAuth::generateTokenPair(decoded.userId, decoded.username, decoded.role, decoded.tenantId);
     
     // Blacklist old refresh token (token rotation)
     JWTAuth::TokenBlacklist::getInstance().addToken(refreshToken);
@@ -449,7 +449,7 @@ void AuthController::revokeToken(const HttpRequestPtr &req, std::function<void(c
 
 // Add to end of AuthController.cc file
 
-void AuthController::selectCustomer(const HttpRequestPtr &req, std::function<void(const HttpResponsePtr &)> &&callback) {
+void AuthController::selectTenant(const HttpRequestPtr &req, std::function<void(const HttpResponsePtr &)> &&callback) {
     // Handle CORS preflight
     if (req->method() == Options) {
         auto resp = HttpResponse::newHttpResponse();
@@ -472,11 +472,11 @@ void AuthController::selectCustomer(const HttpRequestPtr &req, std::function<voi
     }
     
     std::string username = (*jsonPtr).get("username", "").asString();
-    int customerId = (*jsonPtr).get("customerId", 0).asInt();
+    int tenantId = (*jsonPtr).get("tenantId", 0).asInt();
     
-    if (username.empty() || customerId == 0) {
+    if (username.empty() || tenantId == 0) {
         ret["success"] = false;
-        ret["message"] = "Username and customer ID are required";
+        ret["message"] = "Username and tenant ID are required";
         auto resp = HttpResponse::newHttpJsonResponse(ret);
         resp->setStatusCode(k400BadRequest);
         SecurityUtils::addCorsHeaders(resp, req);
@@ -511,21 +511,21 @@ void AuthController::selectCustomer(const HttpRequestPtr &req, std::function<voi
         std::string userRole = userRow["role"].isNull() ? "User" : userRow["role"].as<std::string>();
         std::string userName = userRow["name"].isNull() ? userRow["username"].as<std::string>() : userRow["name"].as<std::string>();
         
-        // Verify user has access to this customer
-        auto customerAccessFuture = dbClient->execSqlAsyncFuture(
-            "SELECT cu.customer_id, c.customer_name, c.customer_category, c.customer_type "
-            "FROM customer_user cu "
-            "JOIN customers c ON cu.customer_id = c.customer_id "
-            "WHERE cu.user_id = $1 AND cu.customer_id = $2 AND c.is_active = true",
+        // Verify user has access to this tenant
+        auto tenantAccessFuture = dbClient->execSqlAsyncFuture(
+            "SELECT tu.tenant_id, t.tenant_name, t.tenant_category, t.tenant_type "
+            "FROM tenant_user tu "
+            "JOIN tenants t ON tu.tenant_id = t.tenant_id "
+            "WHERE tu.user_id = $1 AND tu.tenant_id = $2 AND t.is_active = true",
             userId,
-            customerId
+            tenantId
         );
         
-        auto customerAccessResult = customerAccessFuture.get();
+        auto tenantAccessResult = tenantAccessFuture.get();
         
-        if (customerAccessResult.size() == 0) {
+        if (tenantAccessResult.size() == 0) {
             ret["success"] = false;
-            ret["message"] = "You do not have access to this customer";
+            ret["message"] = "You do not have access to this tenant";
             auto resp = HttpResponse::newHttpJsonResponse(ret);
             resp->setStatusCode(k403Forbidden);
             SecurityUtils::addCorsHeaders(resp, req);
@@ -533,21 +533,21 @@ void AuthController::selectCustomer(const HttpRequestPtr &req, std::function<voi
             return;
         }
         
-        // User has access - generate JWT with selected customer_id
-        std::string customerName = customerAccessResult[0]["customer_name"].as<std::string>();
+        // User has access - generate JWT with selected tenant_id
+        std::string tenantName = tenantAccessResult[0]["tenant_name"].as<std::string>();
         
-        auto tokens = JWTAuth::generateTokenPair(userId, username, userRole, customerId);
+        auto tokens = JWTAuth::generateTokenPair(userId, username, userRole, tenantId);
         
         ret["success"] = true;
-        ret["message"] = "Customer selected successfully";
+        ret["message"] = "Tenant selected successfully";
         ret["accessToken"] = tokens.accessToken;
         ret["user"]["id"] = userId;
         ret["user"]["username"] = username;
         ret["user"]["email"] = userRow["email"].as<std::string>();
         ret["user"]["role"] = userRole;
         ret["user"]["name"] = userName;
-        ret["user"]["customerId"] = customerId;
-        ret["user"]["customerName"] = customerName;
+        ret["user"]["tenantId"] = tenantId;
+        ret["user"]["tenantName"] = tenantName;
         
         // Check super admin
         auto superCheck = dbClient->execSqlSync("SELECT 1 FROM super_users WHERE user_id = $1", userId);

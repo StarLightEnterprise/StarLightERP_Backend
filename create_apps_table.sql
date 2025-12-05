@@ -8,5 +8,5 @@ CREATE TABLE IF NOT EXISTS apps (
 -- Insert initial records
 INSERT INTO apps (app_id, description, is_admin_app) VALUES
 ('A000001', 'Maintain Users', TRUE),
-('A000002', 'Maintain Customers', TRUE)
+('A000002', 'Maintain Tenants', TRUE)
 ON CONFLICT (app_id) DO NOTHING;

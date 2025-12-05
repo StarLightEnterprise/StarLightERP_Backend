@@ -28,18 +28,18 @@ void TenantMiddleware::doFilter(const HttpRequestPtr &req,
         return;
     }
 
-    // 3. Check for customer_id
-    if (decoded.customerId == 0)
+    // 3. Check for tenant_id
+    if (decoded.tenantId == 0)
     {
         auto resp = HttpResponse::newHttpJsonResponse(Json::Value());
         resp->setStatusCode(k403Forbidden);
-        resp->setBody("{\"error\": \"No customer selected. Please select a customer first.\"}");
+        resp->setBody("{\"error\": \"No tenant selected. Please select a tenant first.\"}");
         fcb(resp);
         return;
     }
 
-    // 4. Store customer_id in request attributes for controllers to use
-    req->attributes()->insert("customerId", decoded.customerId);
+    // 4. Store tenant_id in request attributes for controllers to use
+    req->attributes()->insert("tenantId", decoded.tenantId);
     req->attributes()->insert("userId", decoded.userId);
     req->attributes()->insert("userRole", decoded.role);
 

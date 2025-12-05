@@ -9,15 +9,15 @@ DROGON_TEST(JWTUtilsTest)
     int userId = 123;
     std::string username = "testuser";
     std::string role = "user";
-    int customerId = 10000000;
+    int tenantId = 10000000;
     
     // Test Token Pair Generation
-    auto tokenPair = JWTAuth::generateTokenPair(userId, username, role, customerId);
+    auto tokenPair = JWTAuth::generateTokenPair(userId, username, role, tenantId);
     CHECK(tokenPair.accessToken.length() > 0);
     CHECK(tokenPair.refreshToken.length() > 0);
     
     // Test Access Token Generation
-    std::string accessToken = JWTAuth::generateAccessToken(userId, username, role, customerId);
+    std::string accessToken = JWTAuth::generateAccessToken(userId, username, role, tenantId);
     CHECK(accessToken.length() > 0);
     
     // Test Token Validation
@@ -26,7 +26,7 @@ DROGON_TEST(JWTUtilsTest)
     CHECK(decoded.userId == userId);
     CHECK(decoded.username == username);
     CHECK(decoded.role == role);
-    CHECK(decoded.customerId == customerId);
+    CHECK(decoded.tenantId == tenantId);
     
     // Test Invalid Token
     auto invalidDecoded = JWTAuth::validateAndDecode("invalid.token.string");

@@ -1,6 +1,6 @@
 -- Create roles table
 CREATE TABLE IF NOT EXISTS roles (
-    customer_id INTEGER NOT NULL,
+    tenant_id INTEGER NOT NULL,
     role_id SERIAL,
     app_id VARCHAR(50),
     role_name VARCHAR(100),
@@ -12,25 +12,25 @@ CREATE TABLE IF NOT EXISTS roles (
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     
-    PRIMARY KEY (customer_id, role_id),
-    CONSTRAINT fk_roles_customer FOREIGN KEY (customer_id) REFERENCES customers(customer_id) ON DELETE CASCADE
+    PRIMARY KEY (tenant_id, role_id),
+    CONSTRAINT fk_roles_tenant FOREIGN KEY (tenant_id) REFERENCES tenants(tenant_id) ON DELETE CASCADE
 );
 
 -- Create user_roles table
 CREATE TABLE IF NOT EXISTS user_roles (
-    customer_id INTEGER NOT NULL,
+    tenant_id INTEGER NOT NULL,
     user_id INTEGER NOT NULL,
     role_id INTEGER NOT NULL,
     assigned_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     
-    PRIMARY KEY (customer_id, user_id, role_id),
-    CONSTRAINT fk_user_roles_role FOREIGN KEY (customer_id, role_id) REFERENCES roles(customer_id, role_id) ON DELETE CASCADE,
-    CONSTRAINT fk_user_roles_customer FOREIGN KEY (customer_id) REFERENCES customers(customer_id) ON DELETE CASCADE,
+    PRIMARY KEY (tenant_id, user_id, role_id),
+    CONSTRAINT fk_user_roles_role FOREIGN KEY (tenant_id, role_id) REFERENCES roles(tenant_id, role_id) ON DELETE CASCADE,
+    CONSTRAINT fk_user_roles_tenant FOREIGN KEY (tenant_id) REFERENCES tenants(tenant_id) ON DELETE CASCADE,
     CONSTRAINT fk_user_roles_user FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
 
 -- Create indexes
-CREATE INDEX IF NOT EXISTS idx_roles_customer_id ON roles(customer_id);
+CREATE INDEX IF NOT EXISTS idx_roles_tenant_id ON roles(tenant_id);
 CREATE INDEX IF NOT EXISTS idx_user_roles_user_id ON user_roles(user_id);
 CREATE INDEX IF NOT EXISTS idx_user_roles_role_id ON user_roles(role_id);
 

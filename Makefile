@@ -190,30 +190,6 @@ controllers/AuthController.cc.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/StarLightERP_Backend_Temp.dir/build.make CMakeFiles/StarLightERP_Backend_Temp.dir/controllers/AuthController.cc.s
 .PHONY : controllers/AuthController.cc.s
 
-controllers/CustomerController.o: controllers/CustomerController.cc.o
-.PHONY : controllers/CustomerController.o
-
-# target to build an object file
-controllers/CustomerController.cc.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/StarLightERP_Backend_Temp.dir/build.make CMakeFiles/StarLightERP_Backend_Temp.dir/controllers/CustomerController.cc.o
-.PHONY : controllers/CustomerController.cc.o
-
-controllers/CustomerController.i: controllers/CustomerController.cc.i
-.PHONY : controllers/CustomerController.i
-
-# target to preprocess a source file
-controllers/CustomerController.cc.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/StarLightERP_Backend_Temp.dir/build.make CMakeFiles/StarLightERP_Backend_Temp.dir/controllers/CustomerController.cc.i
-.PHONY : controllers/CustomerController.cc.i
-
-controllers/CustomerController.s: controllers/CustomerController.cc.s
-.PHONY : controllers/CustomerController.s
-
-# target to generate assembly for a file
-controllers/CustomerController.cc.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/StarLightERP_Backend_Temp.dir/build.make CMakeFiles/StarLightERP_Backend_Temp.dir/controllers/CustomerController.cc.s
-.PHONY : controllers/CustomerController.cc.s
-
 controllers/HealthController.o: controllers/HealthController.cc.o
 .PHONY : controllers/HealthController.o
 
@@ -285,6 +261,30 @@ controllers/SecurityUtils.s: controllers/SecurityUtils.cc.s
 controllers/SecurityUtils.cc.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/StarLightERP_Backend_Temp.dir/build.make CMakeFiles/StarLightERP_Backend_Temp.dir/controllers/SecurityUtils.cc.s
 .PHONY : controllers/SecurityUtils.cc.s
+
+controllers/TenantController.o: controllers/TenantController.cc.o
+.PHONY : controllers/TenantController.o
+
+# target to build an object file
+controllers/TenantController.cc.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/StarLightERP_Backend_Temp.dir/build.make CMakeFiles/StarLightERP_Backend_Temp.dir/controllers/TenantController.cc.o
+.PHONY : controllers/TenantController.cc.o
+
+controllers/TenantController.i: controllers/TenantController.cc.i
+.PHONY : controllers/TenantController.i
+
+# target to preprocess a source file
+controllers/TenantController.cc.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/StarLightERP_Backend_Temp.dir/build.make CMakeFiles/StarLightERP_Backend_Temp.dir/controllers/TenantController.cc.i
+.PHONY : controllers/TenantController.cc.i
+
+controllers/TenantController.s: controllers/TenantController.cc.s
+.PHONY : controllers/TenantController.s
+
+# target to generate assembly for a file
+controllers/TenantController.cc.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/StarLightERP_Backend_Temp.dir/build.make CMakeFiles/StarLightERP_Backend_Temp.dir/controllers/TenantController.cc.s
+.PHONY : controllers/TenantController.cc.s
 
 controllers/TenantTestController.o: controllers/TenantTestController.cc.o
 .PHONY : controllers/TenantTestController.o
@@ -398,9 +398,6 @@ help:
 	@echo "... controllers/AuthController.o"
 	@echo "... controllers/AuthController.i"
 	@echo "... controllers/AuthController.s"
-	@echo "... controllers/CustomerController.o"
-	@echo "... controllers/CustomerController.i"
-	@echo "... controllers/CustomerController.s"
 	@echo "... controllers/HealthController.o"
 	@echo "... controllers/HealthController.i"
 	@echo "... controllers/HealthController.s"
@@ -410,6 +407,9 @@ help:
 	@echo "... controllers/SecurityUtils.o"
 	@echo "... controllers/SecurityUtils.i"
 	@echo "... controllers/SecurityUtils.s"
+	@echo "... controllers/TenantController.o"
+	@echo "... controllers/TenantController.i"
+	@echo "... controllers/TenantController.s"
 	@echo "... controllers/TenantTestController.o"
 	@echo "... controllers/TenantTestController.i"
 	@echo "... controllers/TenantTestController.s"

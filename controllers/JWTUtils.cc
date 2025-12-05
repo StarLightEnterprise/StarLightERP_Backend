@@ -19,7 +19,7 @@ std::string getJWTSecret() {
 }
 
 // Generate token pair (access + refresh)
-TokenPair generateTokenPair(int userId, const std::string& username, const std::string& role, int customerId) {
+TokenPair generateTokenPair(int userId, const std::string& username, const std::string& role, int tenantId) {
     auto now = std::chrono::system_clock::now();
     std::string secret = getJWTSecret();
     
@@ -33,7 +33,7 @@ TokenPair generateTokenPair(int userId, const std::string& username, const std::
         .set_subject(std::to_string(userId))
         .set_payload_claim("username", jwt::claim(username))
         .set_payload_claim("role", jwt::claim(role))
-        .set_payload_claim("customer_id", jwt::claim(std::to_string(customerId)))
+        .set_payload_claim("tenant_id", jwt::claim(std::to_string(tenantId)))
         .set_payload_claim("type", jwt::claim(std::string("access")))
         .sign(jwt::algorithm::hs256{secret});
     
@@ -47,7 +47,7 @@ TokenPair generateTokenPair(int userId, const std::string& username, const std::
         .set_subject(std::to_string(userId))
         .set_payload_claim("username", jwt::claim(username))
         .set_payload_claim("role", jwt::claim(role))
-        .set_payload_claim("customer_id", jwt::claim(std::to_string(customerId)))
+        .set_payload_claim("tenant_id", jwt::claim(std::to_string(tenantId)))
         .set_payload_claim("type", jwt::claim(std::string("refresh")))
         .sign(jwt::algorithm::hs256{secret});
     
@@ -55,7 +55,7 @@ TokenPair generateTokenPair(int userId, const std::string& username, const std::
 }
 
 // Generate only access token (for refresh flow)
-std::string generateAccessToken(int userId, const std::string& username, const std::string& role, int customerId) {
+std::string generateAccessToken(int userId, const std::string& username, const std::string& role, int tenantId) {
     auto now = std::chrono::system_clock::now();
     auto expiry = now + std::chrono::minutes(ACCESS_TOKEN_EXPIRY_MINUTES);
     std::string secret = getJWTSecret();
@@ -68,7 +68,7 @@ std::string generateAccessToken(int userId, const std::string& username, const s
         .set_subject(std::to_string(userId))
         .set_payload_claim("username", jwt::claim(username))
         .set_payload_claim("role", jwt::claim(role))
-        .set_payload_claim("customer_id", jwt::claim(std::to_string(customerId)))
+        .set_payload_claim("tenant_id", jwt::claim(std::to_string(tenantId)))
         .set_payload_claim("type", jwt::claim(std::string("access")))
         .sign(jwt::algorithm::hs256{secret});
 }
@@ -99,12 +99,18 @@ DecodedToken validateAndDecode(const std::string& token) {
         result.username = decoded.get_payload_claim("username").as_string();
         result.role = decoded.get_payload_claim("role").as_string();
         
-        // Extract customer_id (with default 0 if not present for backwards compatibility)
-        if (decoded.has_payload_claim("customer_id")) {
+        // Extract tenant_id (check both tenant_id and customer_id for backwards compatibility or transition)
+        // But for clean break we use tenant_id primarily.
+        
+        if (decoded.has_payload_claim("tenant_id")) {
+            std::string tenantIdStr = decoded.get_payload_claim("tenant_id").as_string();
+            result.tenantId = std::stoi(tenantIdStr);
+        } else if (decoded.has_payload_claim("customer_id")) {
+            // Fallback for old tokens still floating around (optional but good for transition)
             std::string customerIdStr = decoded.get_payload_claim("customer_id").as_string();
-            result.customerId = std::stoi(customerIdStr);
+            result.tenantId = std::stoi(customerIdStr);
         } else {
-            result.customerId = 0;
+            result.tenantId = 0;
         }
         
         result.expiration = decoded.get_expires_at();
